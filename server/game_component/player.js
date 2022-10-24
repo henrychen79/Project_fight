@@ -1,51 +1,146 @@
-module.exports = class player {
-  #hp = 100;
-  #bodyLength = 4;
-  #attackDist = 2;
-  constructor({ pid, rid, name, head, body } = {}) {
-    this.playerID = pid;
-    this.gameID = rid;
-    this.playerName = name;
-    this.head = head;
-    this.body = body;
-    this.attack = { type: "", point: {} };
-    // set default value
-    this.hp = this.#hp;
-    this.curBodyLength = this.#bodyLength;
+class Player{
+  constructor(location,attackLocation_R,attackLocation_L){
+      this.location=location||{x:0,y:0,scale:100},//預設為:{x:0,y:0,scale:100}
+      this.attackLocation_R={x:1,y:0},
+      this.attackLocation_L={x:-1,y:0},
+      this.attackPower =false
+      this.attack =  false
+      this.scaleControl =  false
+      this.jumpControl =  true
+      this.directionX =  'ArrowRight'
+      this.directionY =  null
   }
-  move(type) {
-    if (type === "moveLeft") this.head.x = this.head.x - 1;
-    else if (type === "moveRight") this.head.x = this.head.x + 1;
-    else if (type === "moveUp") this.head.y = this.head.y - 3;
-    else if (type === "moveDown") {
-      this.head.y = this.head.y + 3;
-      this.curBodyLength = this.curBodyLength - 3;
-    }
+  player_moveUp(){
+    if(this.scaleControl==true){
+      return
+      }
+      if(player.jumpControl){
+          this.location.x = this.location.x
+          this.location.y = this.location.y-1
+          this.jumpControl=false
+      }
   }
-  setBody() {
-    for (let index = 0; index < this.curBodyLength; index++) {
-      if (index === 0)
-        this.body[index] = { x: this.head.x, y: this.head.y + 1 };
-      else his.body[index] = { x: this.head.x, y: this.body[index].y + 1 };
-    }
+  player_moveDown(){
+      if(this.jumpControl!=true){
+          return
+      }
+      this.scaleControl=true
+      if(this.scaleControl){
+          this.location.scale=50;
+      }
   }
-  attack(attackType) {
-    this.attackEvent.type = attackType;
-    this.attackEvent.area = {
-      x: this.head.x + this.#attackDist,
-      y: this.head.y,
-    };
+
+  player_moveLeft(){
+      if(this.jumpControl!=true||this.scaleControl==true){
+          return
+      }
+      if(this.location.x===0){
+          this.location.x = this.location.x
+          this.location.y = this.location.y
+      }else{
+          this.location.x = this.location.x-1
+          this.location.y = this.location.y
+      }
+   
   }
-  deductHP(attackType) {
-    if (attackType === "SA") this.hp = this.hp - 5;
-    if (attackType === "NA") this.hp = this.hp - 1;
+
+  player_moveRight(){
+      if(this.jumpControl!=true||this.scaleControl==true){
+          return
+      }
+      if(this.location.x===9){
+          this.location.x = this.location.x
+          this.location.y = this.location.y
+      }else{
+          this.location.x = this.location.x+1
+          this.location.y = this.location.y
+      }
+
   }
-  static checkIsAttack(player1, player2) {
-    // 檢查attack point 是否等於對手head
-    if (
-      player1.attack.point.x === player2.head.x &&
-      player1.attack.point.y === player2.head.y
-    )
-      player2.deductHP(player1.attack.type);
+  wapeMoveRight(){
+      this.attackLocation_R.x=this.location.x+1
+      this.attackLocation_R.y=this.location.y
+
+      this.attackLocation_L.x=this.location.x-1
+      this.attackLocation_L.y=this.location.y
   }
-};
+  wapeMoveLeft(){
+      this.attackLocation_R.x=this.location.x+1
+      this.attackLocation_R.y=this.attackLocation_R.y
+
+      this.attackLocation_L.x=this.location.x-1
+      this.attackLocation_L.y=this.attackLocation_L.y
+  }
+  player_setDirectionY(type){
+      this.directionY=type
+  }
+  player_setDirectionX(type){
+      this.directionX=type
+  }
+  //整個角色和武器 移動基本設定
+  move(type){
+      if(type === 'ArrowLeft' ||type=== 'ArrowRight') {
+          this.player_setDirectionX(type);
+      }
+      if(type === 'ArrowUp' ||type === 'ArrowDown') {
+          this.player_setDirectionY(type);
+      }
+      if(type === 'ArrowUp') {
+          this.player_moveUp();
+      }
+      if(type=== 'ArrowDown') {
+          this.player_moveDown();
+      }
+      if(type === 'ArrowLeft') {
+          this.player_moveLeft();
+          this.wapeMoveLeft()
+      }
+      if(type === 'ArrowRight') {
+          this.player_moveRight();
+          this.wapeMoveRight()
+      }
+  }
+
+  //對移動造成的小問題，做些設定
+  player_moveUp2(){
+      if(this.jumpControl!=true){
+          this.location.x = this.location.x
+          this.location.y = this.location.y+1
+          this.jumpControl=true
+      }
+  }
+  player_moveDown2(){
+      this.scaleControl=false
+      if(this.scaleControl!=true){
+          this.location.scale=100;
+      }
+  }
+  move2(type){
+      if(type === 'ArrowDown') {
+          this.player_moveDown2();
+      }
+          if(type === 'ArrowUp') {
+          this.player_moveUp2();  
+      }
+
+  }
+  //攻擊設定
+  attackSpace(type){  
+      if(type==='Space'){
+          //蹲下無法攻擊
+          if(type==='Space'&&this.location.scale===50){
+              return
+          }
+          //跳躍狀態 無法攻擊
+          if(type==='Space'&&this.location.y===4){
+              return
+          }
+          
+          //設成true，讓畫面開啟
+          this.attack=true;
+      }
+  }
+
+}
+
+module.exports = {Player};
