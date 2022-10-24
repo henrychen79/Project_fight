@@ -10,6 +10,8 @@ app.use("/css", express.static(__dirname + "/css"));
 server.listen(server_port, () => {
   console.log(`listen on ${server_port}!!!`);
 });
+console.log('124141241252353')
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/view/fight_game.html");
 });
+
