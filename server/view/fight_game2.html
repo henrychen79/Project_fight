@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .world{
+            width: 800px;
+            height: 800px;
+            background-color: seagreen;
+        }
+        .test{
+            /* width: 100px;
+            height: 100px; */
+            background-color: brown;
+            transform: translate(0px,0px);
+            /* transform-origin: 50% 50% */
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="world">
+        <div class="test"></div>
+    </div>
+
+
+
+    <script>
+        let test = document.querySelector('.test')
+        let person ={
+            body:4,
+            jump:{x:0,y:0},
+            down:{x:0,y:0}
+        }
+        let translateY=0
+        let translateX=0
+        let control_up = true
+        let control_down = true
+        let unit =25;
+
+        function personView(){
+            test.style.width=100+'px'
+            test.style.height=`${person.body*unit}px`
+        }
+     
+    document.addEventListener('keydown',function(e){
+            console.log(e.code)
+            console.log(person.body)
+            if(e.code === 'ArrowUp') {
+                translateY=translateY-5
+                translateX=translateX
+                test.style.transform=`translate(${translateX}px,${translateY}px)`
+               
+            }
+            if(e.code === 'ArrowDown') {
+                 translateY=translateY+5
+                 translateX=translateX
+                 test.style.transform=`translate(${translateX}px,${translateY}px)`
+            }
+            if(e.code === 'ArrowLeft') {
+                 translateY=translateY
+                 translateX=translateX-5
+                 test.style.transform=`translate(${translateX}px,${translateY}px)`
+            }
+            if(e.code === 'ArrowRight') {
+                 translateY = translateY
+                 translateX = translateX+5
+                 test.style.transform=`translate(${translateX}px,${translateY}px)`
+            }
+            if(e.code==='KeyW'&& control_up===true){
+                person.body = person.body-2;
+                control_up=false
+            }
+            if(e.code==='KeyS'&& control_down===true){
+                person.body = person.body-3;
+                test.style.transform=`translate(scale${(person.body*0.25)})`
+                control_down=false
+            }
+            personView()
+            
+    })  
+    document.addEventListener('keyup',function(e){
+        if(e.code==='KeyW'&& control_up===false){
+            person.body = person.body+2;
+            control_up=true
+        }
+        if(e.code==='KeyS'&& control_down===false){
+            person.body = person.body+3;
+            control_down=true
+        }
+        personView()
+       
+    })
+    personView()     
+    </script>
+</body>
+</html>
