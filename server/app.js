@@ -6,12 +6,13 @@ const http = require("http");
 const server = http.createServer(app);
 const Server = require("socket.io");
 const io = new Server.Server(server);
+const game_route = require("./routes/fight_game_route");
+const game_socket_handler = require("./game_socket_handler");
 app.use("/css", express.static(__dirname + "/css"));
 server.listen(server_port, () => {
   console.log(`listen on ${server_port}!!!`);
 });
-console.log('124141241252353')
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/view/fight_game.html");
+app.use("/game", game_route);
+io.on("connection", (socket) => {
+  game_socket_handler.conn(socket, io);
 });
-
