@@ -170,10 +170,10 @@
         <div class="attack_smile_left"></div>
       </div>
     </div>
-
+    <script src="/socket.io/socket.io.js"></script>
     <script>
       /*-------------------------資料-----------------------------------*/
-
+      var socket = io();
       player = {
         location: { x: 0, y: 0, scale: 100 }, //角色位置(左右:x 跳躍上:y 蹲下:scale(正常為100%，蹲下狀態改為50%: 會將傳至前端畫面 圖片會縮小一半 ) )
         attackPower: false, //攻擊狀態1(強力)
@@ -308,6 +308,7 @@
       /*-------------------------控制-----------------------------------*/
       initialize();
       document.addEventListener("keydown", function (e) {
+        socket.emit("chat message", e.code);
         if (e.code === "ArrowLeft" || e.code === "ArrowRight") {
           player_setDirectionX(e.code);
         }
