@@ -1,8 +1,40 @@
+const game_data_store = require("./models/game_data_store");
+const game_class = require("./game_component/game");
+const player_class = require("./game_component/player");
 let game_data = require("./models/game_data_store");
 console.log(game_data.name);
 function conn(socket, io) {
   socket.on("join-room", (player_name, room_id) => {
-    socket.join(room_id);
+    console.log("socket id: ", socket.id);
+    if (1) {
+      console.log("check_room_exist");
+      let game = game_data_store.check_room_exist(room_id);
+      console.log(game);
+      if (!game) {
+        game = new game_class({ id: room_id });
+        game_data_store.init_game_data(room_id, game);
+        var player = new player_class(player_name, room_id);
+        game.add_players(player);
+      }
+      if (!game.check_player_exist(player_name)) {
+        console.log(game);
+        var player = new player_class(
+          player_name,
+          room_id,
+          {
+            x: 9,
+            y: 5,
+            scale: 100,
+          },
+          "player2",
+          "ArrowLeft"
+        );
+        game.add_players(player);
+      }
+      //console.log(game_data_store.player);
+      socket.join(room_id);
+      io.sockets.to(room_id).emit("init player", game.players);
+    }
   });
   socket.on("disconnect", (ev) => {
     console.log("user disconnect:; ", ev);
@@ -12,10 +44,13 @@ function conn(socket, io) {
       .emit("room-brocast", `${socket["nick"]} has leave this room`);
   });
   socket.on("player action", (room_id, player_name, type) => {
-    let player = game_data.get_player(player_name);
+    console.log("send room_id: ", parseInt(room_id));
+    let game = game_data.get_game(room_id);
+    console.log("send game: ", game);
+    let player = game.get_player(player_name);
     player.move(type);
     console.log("send player: ", player);
-    io.sockets.to(room_id).emit("player action", player);
+    io.sockets.to(room_id).emit("player action", game.players);
   });
 }
 function player_process(player) {

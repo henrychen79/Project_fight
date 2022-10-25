@@ -1,653 +1,554 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-        *{
-            padding: 0;
-            margin: 0;
-            list-style: none;
-        }
-        /* :root{
+      * {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+      /* :root{
             --hp_value:100%;
         } */
-        body{
-            position: relative;
-            width: 100vw;
-            height: 100vh;    
-        }
-        .main{
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: black;
-        }
-        .world{
-            position: absolute;
-            width: 1000px;
-            height: 600px;
-            background-color: rgb(255, 255, 255);
-        }
-        .rule{
-            position: absolute;
-            left: 0px;
-            bottom: 0px;
-            width: 100px;
-            height: 100px;
-            /* background-color: brown; */
-            background-image: url(wa.png);
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: 100%;
-            transition: 0.1s all;
-        }
-        .nameId_View{
-            position:absolute;
-            font-weight: bolder;
-            top:-10%;
-            left: 50%;
-            transform:translateX(-50%)
-        }
-        .hp_View{
-            position:absolute;
-            bottom:5%;
-            left: 50%;
-            transform:translateX(-50%);
-            border: 1px solid red;
-            width:100%;
-            /* width: var(--hp_value); */
-        }
-        .attack_smile_right{
-            display: none;
-            position:absolute;
-            width: 100px;
-            height: 100px;
-            left:0;
-            bottom: 0;
-            z-index: 2;
-        }
-        .attack_smile_right::after{
-            content: "";
-            position:absolute;
-            left:-60px;
-            bottom: 20px;
-            width: 100px;
-            height: 100px;
-            border-top-right-radius:60% ;
-            border-bottom-right-radius: 100%;
-            border-top: 1px solid transparent;
-            border-bottom: 5px solid transparent;
-            border-right: 10px solid rgb(180, 0, 0);
-            
-        }
-        .attack_smile_left{
-            display: none;
-            position:absolute;
-            width: 100px;
-            height: 100px;
-            left:0;
-            bottom: 0;
-            z-index: 2;
-        }
-        .attack_smile_left::before{
-            content: "";
-            position:absolute;
-            width: 100px;
-            height: 100px;
-            left:60px;
-            bottom: 20px;
-            border-top-left-radius:60% ;
-            border-bottom-left-radius: 100%;
-            border-top: 1px solid transparent;
-            border-bottom: 5px solid transparent;
-            border-left: 10px solid rgb(180, 0, 0);
-        }
-        .msg_main{
-            width: 100%;
-            height: 100px;
-            /* border: 1px solid red; */
-            display: flex;
-        }
-        .player1_msg{
-            border: 1px solid rgb(13, 13, 13);
-            padding: 40px;
-            flex:3
-        }
-        .player1Hp{
-            border: 1px solid rgb(255, 255, 255);
-            background-color: darkgreen;
-            height: 20px;
-            border-radius: 10px;
-        }
-        .time_msg{
-            border: 1px solid rgb(219, 120, 15);
-            flex:1;     
-        }
-        .player2_msg{
-            border: 1px solid rgb(4, 70, 76);
-            padding: 40px;
-            flex:3
-        }
-        .player2Hp{
-            border: 1px solid rgb(255, 255, 255);
-            background-color: darkgreen;
-            height: 20px;
-            border-radius: 10px;
-        }   
-        .time_msg{
-            width:100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .time_msg>p{
-            font-size: 5rem;
-        }
+      body {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+      }
+      .main {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: black;
+      }
+      .world {
+        position: absolute;
+        width: 1000px;
+        height: 600px;
+        background-color: rgb(255, 255, 255);
+      }
+      .rule {
+        display: none;
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        width: 100px;
+        height: 100px;
+        /* background-color: brown; */
+        background-image: url(./css/wa.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 100%;
+        transition: 0.1s all;
+      }
+      .nameId_View {
+        position: absolute;
+        font-weight: bolder;
+        top: -10%;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .hp_View {
+        position: absolute;
+        bottom: 5%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 1px solid red;
+        width: 100%;
+        /* width: var(--hp_value); */
+      }
+      .attack_smile_right {
+        display: none;
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        left: 0;
+        bottom: 0;
+        z-index: 2;
+      }
+      .attack_smile_right::after {
+        content: "";
+        position: absolute;
+        left: -60px;
+        bottom: 20px;
+        width: 100px;
+        height: 100px;
+        border-top-right-radius: 60%;
+        border-bottom-right-radius: 100%;
+        border-top: 1px solid transparent;
+        border-bottom: 5px solid transparent;
+        border-right: 10px solid rgb(180, 0, 0);
+      }
+      .attack_smile_left {
+        display: none;
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        left: 0;
+        bottom: 0;
+        z-index: 2;
+      }
+      .attack_smile_left::before {
+        content: "";
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        left: 60px;
+        bottom: 20px;
+        border-top-left-radius: 60%;
+        border-bottom-left-radius: 100%;
+        border-top: 1px solid transparent;
+        border-bottom: 5px solid transparent;
+        border-left: 10px solid rgb(180, 0, 0);
+      }
+      .msg_main {
+        width: 100%;
+        height: 100px;
+        /* border: 1px solid red; */
+        display: flex;
+      }
+      .player1_msg {
+        border: 1px solid rgb(13, 13, 13);
+        padding: 40px;
+        flex: 3;
+      }
+      .player1Hp {
+        border: 1px solid rgb(255, 255, 255);
+        background-color: darkgreen;
+        height: 20px;
+        border-radius: 10px;
+      }
+      .time_msg {
+        border: 1px solid rgb(219, 120, 15);
+        flex: 1;
+      }
+      .player2_msg {
+        border: 1px solid rgb(4, 70, 76);
+        padding: 40px;
+        flex: 3;
+      }
+      .player2Hp {
+        border: 1px solid rgb(255, 255, 255);
+        background-color: darkgreen;
+        height: 20px;
+        border-radius: 10px;
+      }
+      .time_msg {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .time_msg > p {
+        font-size: 5rem;
+      }
     </style>
-</head>
-<body>
-    
+  </head>
+  <body>
     <div class="main">
-        <div class="world">
-            <div class="msg_main">
-                <div class="player1_msg">
-                    <div class="player1Hp"></div>
-                </div>
-                <div class="time_msg">
-                    <p>60</p>
-                </div>
-                <div class="player2_msg">
-                    <div class="player2Hp"></div>
-                </div>
-            </div>
-            <div class="rule.list">
-                <div class="rule">
-                    <div class="nameId_View">我是誰</div>
-                    <div class="hp_View"></div>
-                </div>
-                <div class="attack_smile_right"></div>
-                <div class="attack_smile_left"></div>
-            </div>
-            <div class="rule.list">
-                <div class="rule">
-                    <div class="nameId_View">我是誰</div>
-                    <div class="hp_View"></div>
-                </div>
-                <div class="attack_smile_right"></div>
-                <div class="attack_smile_left"></div>
-            </div>
+      <div class="world">
+        <div class="msg_main">
+          <div class="player1_msg">
+            <div class="player1Hp"></div>
+          </div>
+          <div class="time_msg">
+            <p>60</p>
+          </div>
+          <div class="player2_msg">
+            <div class="player2Hp"></div>
+          </div>
         </div>
+        <div class="rule.list">
+          <div class="rule">
+            <div class="nameId_View">我是誰</div>
+            <div class="hp_View"></div>
+          </div>
+          <div class="attack_smile_right"></div>
+          <div class="attack_smile_left"></div>
+        </div>
+        <div class="rule.list">
+          <div class="rule">
+            <div class="nameId_View">我是誰</div>
+            <div class="hp_View"></div>
+          </div>
+          <div class="attack_smile_right"></div>
+          <div class="attack_smile_left"></div>
+        </div>
+      </div>
     </div>
-
+    <script src="/socket.io/socket.io.js"></script>
     <script>
-/*---------------------玩家class 包含 各項屬性 及方法--------------------------*/        
-        class PlayerTest{
-            constructor(location,attackLocation_R,attackLocation_L){
-                this.location=location||{x:0,y:5,scale:100},//預設為:{x:0,y:0,scale:100}
-                this.attackLocation_R={x:1,y:5},
-                this.attackLocation_L={x:-1,y:5},
-                this.attackPower =false
-                this.attack =  false
-                this.scaleControl =  false
-                this.jumpControl =  true
-                this.directionX =  'ArrowRight'
-                this.directionY =  null
-            }
-            player_moveUp(){
-              if(this.scaleControl==true){
-                return
-                }
-                if(this.jumpControl){
-                    this.location.x = this.location.x
-                    this.location.y = this.location.y-1
-                    this.jumpControl=false
-                }
-            }
-            player_moveDown(){
-                if(this.jumpControl!=true){
-                    return
-                }
-                this.scaleControl=true
-                if(this.scaleControl){
-                    this.location.scale=50;
-                }
-            }
-
-            player_moveLeft(){
-                if(this.jumpControl!=true||this.scaleControl==true){
-                    return
-                }
-                if(this.location.x===0){
-                    this.location.x = this.location.x
-                    this.location.y = this.location.y
-                }else{
-                    this.location.x = this.location.x-1
-                    this.location.y = this.location.y
-                }
-             
-            }
-
-            player_moveRight(){
-                if(this.jumpControl!=true||this.scaleControl==true){
-                    return
-                }
-                if(this.location.x===9){
-                    this.location.x = this.location.x
-                    this.location.y = this.location.y
-                }else{
-                    this.location.x = this.location.x+1
-                    this.location.y = this.location.y
-                }
-          
-            }
-            wapeMoveRight(){
-                this.attackLocation_R.x=this.location.x+1
-                this.attackLocation_R.y=this.location.y
-
-                this.attackLocation_L.x=this.location.x-1
-                this.attackLocation_L.y=this.location.y
-            }
-            wapeMoveLeft(){
-                this.attackLocation_R.x=this.location.x+1
-                this.attackLocation_R.y=this.attackLocation_R.y
-
-                this.attackLocation_L.x=this.location.x-1
-                this.attackLocation_L.y=this.attackLocation_L.y
-            }
-            player_setDirectionY(type){
-                this.directionY=type
-            }
-            player_setDirectionX(type){
-                this.directionX=type
-            }
-            //整個角色和武器 移動基本設定
-            move(type){
-                if(type === 'ArrowLeft' ||type=== 'ArrowRight') {
-                    this.player_setDirectionX(type);
-                }
-                if(type === 'ArrowUp' ||type === 'ArrowDown') {
-                    this.player_setDirectionY(type);
-                }
-                if(type === 'ArrowUp') {
-                    this.player_moveUp();
-                }
-                if(type=== 'ArrowDown') {
-                    this.player_moveDown();
-                }
-                if(type === 'ArrowLeft') {
-                    this.player_moveLeft();
-                    this.wapeMoveLeft()
-                }
-                if(type === 'ArrowRight') {
-                    this.player_moveRight();
-                    this.wapeMoveRight()
-                }
-            }
-
-            //對移動造成的小問題，做些設定
-            player_moveUp2(){
-                if(this.jumpControl!=true){
-                    this.location.x = this.location.x
-                    this.location.y = this.location.y+1
-                    this.jumpControl=true
-                }
-            }
-            player_moveDown2(){
-                this.scaleControl=false
-                if(this.scaleControl!=true){
-                    this.location.scale=100;
-                }
-            }
-            move2(type){
-                if(type === 'ArrowDown') {
-                    this.player_moveDown2();
-                }
-                    if(type === 'ArrowUp') {
-                    this.player_moveUp2();  
-                }
-
-            }
-            //攻擊設定
-            attackSpace(type){  
-                if(type==='Space'){
-                    //蹲下無法攻擊
-                    if(type==='Space'&&this.location.scale===50){
-                        return
-                    }
-                    //跳躍狀態 無法攻擊
-                    if(type==='Space'&&this.location.y===4){
-                        return
-                    }
-                    
-                    //設成true，讓畫面開啟
-                    this.attack=true;
-                }
-            }
-
+      /*---------------------玩家class 包含 各項屬性 及方法--------------------------*/
+      class PlayerTest {
+        constructor(location, attackLocation_R, attackLocation_L) {
+          (this.location = location || { x: 0, y: 5, scale: 100 }), //預設為:{x:0,y:0,scale:100}
+            (this.attackLocation_R = { x: 1, y: 5 }),
+            (this.attackLocation_L = { x: -1, y: 5 }),
+            (this.attackPower = false);
+          this.attack = false;
+          this.scaleControl = false;
+          this.jumpControl = true;
+          this.directionX = "ArrowRight";
+          this.directionY = null;
+        }
+        player_moveUp() {
+          if (this.scaleControl == true) {
+            return;
+          }
+          if (this.jumpControl) {
+            this.location.x = this.location.x;
+            this.location.y = this.location.y - 1;
+            this.jumpControl = false;
+          }
+        }
+        player_moveDown() {
+          if (this.jumpControl != true) {
+            return;
+          }
+          this.scaleControl = true;
+          if (this.scaleControl) {
+            this.location.scale = 50;
+          }
         }
 
-        // class PlayerTest2{
-        //     constructor(location,attackLocation_R,attackLocation_L){
-        //         this.location=location||{x:9,y:5,scale:100},//預設為:{x:0,y:0,scale:100}
-        //         this.attackLocation_R={x:10,y:5},
-        //         this.attackLocation_L={x:8,y:5},
-        //         this.attackPower =false
-        //         this.attack =  false
-        //         this.scaleControl =  false
-        //         this.jumpControl =  true
-        //         this.directionX =  'KeyA'
-        //         this.directionY =  null
-        //     }
-        //     player_moveUp(){
-        //       if(this.scaleControl==true){
-        //         return
-        //         }
-        //         if(this.jumpControl){
-        //             this.location.x = this.location.x
-        //             this.location.y = this.location.y-1
-        //             this.jumpControl=false
-        //         }
-        //     }
-        //     player_moveDown(){
-        //         if(this.jumpControl!=true){
-        //             return
-        //         }
-        //         this.scaleControl=true
-        //         if(this.scaleControl){
-        //             this.location.scale=50;
-        //         }
-        //     }
-
-        //     player_moveLeft(){
-        //         if(this.jumpControl!=true||this.scaleControl==true){
-        //             return
-        //         }
-        //         if(this.location.x===0){
-        //             this.location.x = this.location.x
-        //             this.location.y = this.location.y
-        //         }else{
-        //             this.location.x = this.location.x-1
-        //             this.location.y = this.location.y
-        //         }
-             
-        //     }
-
-        //     player_moveRight(){
-        //         if(this.jumpControl!=true||this.scaleControl==true){
-        //             return
-        //         }
-        //         if(this.location.x===9){
-        //             this.location.x = this.location.x
-        //             this.location.y = this.location.y
-        //         }else{
-        //             this.location.x = this.location.x+1
-        //             this.location.y = this.location.y
-        //         }
-          
-        //     }
-        //     wapeMoveRight(){
-        //         this.attackLocation_R.x=this.location.x+1
-        //         this.attackLocation_R.y=this.location.y
-
-        //         this.attackLocation_L.x=this.location.x-1
-        //         this.attackLocation_L.y=this.location.y
-        //     }
-        //     wapeMoveLeft(){
-        //         this.attackLocation_R.x=this.location.x+1
-        //         this.attackLocation_R.y=this.attackLocation_R.y
-
-        //         this.attackLocation_L.x=this.location.x-1
-        //         this.attackLocation_L.y=this.attackLocation_L.y
-        //     }
-        //     player_setDirectionY(type){
-        //         this.directionY=type
-        //     }
-        //     player_setDirectionX(type){
-        //         this.directionX=type
-        //     }
-        //     //整個角色和武器 移動基本設定
-        //     move(type){
-        //         if(type === 'KeyA' ||type=== 'KeyD') {
-        //             this.player_setDirectionX(type);
-        //         }
-        //         if(type === 'KeyW' ||type === 'KeyS') {
-        //             this.player_setDirectionY(type);
-        //         }
-        //         if(type === 'KeyW') {
-        //             this.player_moveUp();
-        //         }
-        //         if(type=== 'KeyS') {
-        //             this.player_moveDown();
-        //         }
-        //         if(type === 'KeyA') {
-        //             this.player_moveLeft();
-        //             this.wapeMoveLeft()
-        //         }
-        //         if(type === 'KeyD') {
-        //             this.player_moveRight();
-        //             this.wapeMoveRight()
-        //         }
-        //     }
-
-        //     //對移動造成的小問題，做些設定
-        //     player_moveUp2(){
-        //         if(this.jumpControl!=true){
-        //             this.location.x = this.location.x
-        //             this.location.y = this.location.y+1
-        //             this.jumpControl=true
-        //         }
-        //     }
-        //     player_moveDown2(){
-        //         this.scaleControl=false
-        //         if(this.scaleControl!=true){
-        //             this.location.scale=100;
-        //         }
-        //     }
-        //     move2(type){
-        //         if(type === 'KeyS') {
-        //             this.player_moveDown2();
-        //         }
-        //             if(type === 'KeyW') {
-        //             this.player_moveUp2();  
-        //         }
-
-        //     }
-        //     //攻擊設定
-        //     attackSpace(type){  
-        //         if(type==='KeyZ'){
-        //             //蹲下無法攻擊
-        //             if(type==='KeyZ'&&this.location.scale===50){
-        //                 return
-        //             }
-        //             //跳躍狀態 無法攻擊
-        //             if(type==='KeyZ'&&this.location.y===4){
-        //                 return
-        //             }
-                    
-        //             //設成true，讓畫面開啟
-        //             this.attack=true;
-        //         }
-        //     }
-
-        // }
-/*-----------------------------------顯示區----------------------*/
-        let unit = 100;//後端都是以數字存入 ，以最小單位:1 ，去做運算 ，此unit為我要在前端呈現給使用者實際大小，但與 width 相依
-        // let rule = document.querySelector('.rule')
-        // let hp_View = document.querySelector('.hp_View')
-        // let attack_smile_right = document.querySelector('.attack_smile_right')
-        // let attack_smile_left = document.querySelector('.attack_smile_left ')
-        let rule = document.querySelectorAll('.rule')
-        let hp_View = document.querySelectorAll('.hp_View')
-        let attack_smile_right = document.querySelectorAll('.attack_smile_right')
-        let attack_smile_left = document.querySelectorAll('.attack_smile_left ')
-
-        //角色移動
-        function rule_move(){
-            rule[0].style.left=player1.location.x * unit+"px"
-            rule[0].style.top=player1.location.y * unit+"px"
-
-            rule[1].style.left=player2.location.x * unit+"px"
-            rule[1].style.top=player2.location.y * unit+"px"
-        }
-        function rule_scale(){
-            // rule.style.transform=`scale(${player.location.scale})`
-            rule[0].style.backgroundSize=`${player1.location.scale}%`
-            rule[1].style.backgroundSize=`${player2.location.scale}%`
-        }
-        function player_setDirectionX(directionX){
-            // player1.directionX=directionX
-            if(player1.directionX==='ArrowLeft'){
-                rule[0].style.backgroundImage="url(wa2.png)"
-                // rule.style.transform='scaleX(-1)'
-            }
-            if(player1.directionX==='ArrowRight'){
-                rule[0].style.backgroundImage="url(wa.png)"
-                // rule.style.transform='scaleX(1)'
-            }
-
-            // player2.directionX=directionX
-            if( player2.directionX==='ArrowLeft'){
-                rule[1].style.backgroundImage="url(wa2.png)"
-                // rule.style.transform='scaleX(-1)'
-            }
-            if( player2.directionX==='ArrowRight'){
-                rule[1].style.backgroundImage="url(wa.png)"
-                // rule.style.transform='scaleX(1)'
-            }
+        player_moveLeft() {
+          if (this.jumpControl != true || this.scaleControl == true) {
+            return;
+          }
+          if (this.location.x === 0) {
+            this.location.x = this.location.x;
+            this.location.y = this.location.y;
+          } else {
+            this.location.x = this.location.x - 1;
+            this.location.y = this.location.y;
+          }
         }
 
-        //角色一開始位置
-        function initialize(){
-            // player1.location.y = 5
-            rule[0].style.left=player1.location.x * unit+"px"
-            rule[0].style.top=player1.location.y * unit+"px"
+        player_moveRight() {
+          if (this.jumpControl != true || this.scaleControl == true) {
+            return;
+          }
+          if (this.location.x === 9) {
+            this.location.x = this.location.x;
+            this.location.y = this.location.y;
+          } else {
+            this.location.x = this.location.x + 1;
+            this.location.y = this.location.y;
+          }
+        }
+        wapeMoveRight() {
+          this.attackLocation_R.x = this.location.x + 1;
+          this.attackLocation_R.y = this.location.y;
 
-            // player2.location.y = 5
-            rule[1].style.left=player2.location.x * unit+"px"
-            rule[1].style.top=player2.location.y * unit+"px"
+          this.attackLocation_L.x = this.location.x - 1;
+          this.attackLocation_L.y = this.location.y;
+        }
+        wapeMoveLeft() {
+          this.attackLocation_R.x = this.location.x + 1;
+          this.attackLocation_R.y = this.attackLocation_R.y;
+
+          this.attackLocation_L.x = this.location.x - 1;
+          this.attackLocation_L.y = this.attackLocation_L.y;
+        }
+        player_setDirectionY(type) {
+          this.directionY = type;
+        }
+        player_setDirectionX(type) {
+          this.directionX = type;
+        }
+        //整個角色和武器 移動基本設定
+        move(type) {
+          if (type === "ArrowLeft" || type === "ArrowRight") {
+            this.player_setDirectionX(type);
+          }
+          if (type === "ArrowUp" || type === "ArrowDown") {
+            this.player_setDirectionY(type);
+          }
+          if (type === "ArrowUp") {
+            this.player_moveUp();
+          }
+          if (type === "ArrowDown") {
+            this.player_moveDown();
+          }
+          if (type === "ArrowLeft") {
+            this.player_moveLeft();
+            this.wapeMoveLeft();
+          }
+          if (type === "ArrowRight") {
+            this.player_moveRight();
+            this.wapeMoveRight();
+          }
         }
 
-
-        //武器位置
-        function wapeLocation(){
-            // player1.attackLocation_L.y = 5
-            // player1.attackLocation_R.y = 5
-            if(player1.directionX==='ArrowRight'){
-                // attack_smile_right.style.display='none'
-                // attack_smile_left.style.display='none'
-                attack_smile_right[0].style.left= player1.attackLocation_R.x * unit+"px"
-                attack_smile_right[0].style.top= player1.attackLocation_R.y * unit+"px"
-            }
-            if(player1.directionX==='ArrowLeft'){
-                // attack_smile_right.style.display='none'
-                // attack_smile_left.style.display='none'
-                attack_smile_left[0].style.left= player1.attackLocation_L.x * unit+"px"
-                attack_smile_left[0].style.top= player1.attackLocation_L.y * unit+"px"
-            }
-
-            // player2.attackLocation_L.y = 5
-            // player2.attackLocation_R.y = 5
-            if(player2.directionX==='ArrowRight'){
-                // attack_smile_right.style.display='none'
-                // attack_smile_left.style.display='none'
-                attack_smile_right[1].style.left= player2.attackLocation_R.x * unit+"px"
-                attack_smile_right[1].style.top= player2.attackLocation_R.y * unit+"px"
-            }
-            if(player2.directionX==='ArrowLeft'){
-                // attack_smile_right.style.display='none'
-                // attack_smile_left.style.display='none'
-                attack_smile_left[1].style.left= player2.attackLocation_L.x * unit+"px"
-                attack_smile_left[1].style.top= player2.attackLocation_L.y * unit+"px"
-            }
-           
+        //對移動造成的小問題，做些設定
+        player_moveUp2() {
+          if (this.jumpControl != true) {
+            this.location.x = this.location.x;
+            this.location.y = this.location.y + 1;
+            this.jumpControl = true;
+          }
         }
-        //武器顯示
-        function wapeView(){
-                //攻擊顯示(右)
-                if(player1.directionX==='ArrowRight'&& player1.attack==true){
-                    attack_smile_right[0].style.display='block';
-                    
-                }
-                //攻擊顯示(左)
-                if(player1.directionX==='ArrowLeft'&& player1.attack==true){
-                    attack_smile_left[0].style.display='block';
-                }
+        player_moveDown2() {
+          this.scaleControl = false;
+          if (this.scaleControl != true) {
+            this.location.scale = 100;
+          }
+        }
+        move2(type) {
+          if (type === "ArrowDown") {
+            this.player_moveDown2();
+          }
+          if (type === "ArrowUp") {
+            this.player_moveUp2();
+          }
+        }
+        //攻擊設定
+        attackSpace(type) {
+          if (type === "Space") {
+            //蹲下無法攻擊
+            if (type === "Space" && this.location.scale === 50) {
+              return;
+            }
+            //跳躍狀態 無法攻擊
+            if (type === "Space" && this.location.y === 4) {
+              return;
+            }
 
-                       //攻擊顯示(右)
-                if(player2.directionX==='ArrowRight'&& player2.attack==true){
-                    attack_smile_right[1].style.display='block';
-                    
-                }
-                //攻擊顯示(左)
-                if(player2.directionX==='ArrowLeft'&& player2.attack==true){
-                    attack_smile_left[1].style.display='block';
-                }
+            //設成true，讓畫面開啟
+            this.attack = true;
+          }
+        }
+      }
+      /*-----------------------------------顯示區----------------------*/
+      let unit = 100; //後端都是以數字存入 ，以最小單位:1 ，去做運算 ，此unit為我要在前端呈現給使用者實際大小，但與 width 相依
+      // let rule = document.querySelector('.rule')
+      // let hp_View = document.querySelector('.hp_View')
+      // let attack_smile_right = document.querySelector('.attack_smile_right')
+      // let attack_smile_left = document.querySelector('.attack_smile_left ')
+      let rule = document.querySelectorAll(".rule");
+      let hp_View = document.querySelectorAll(".hp_View");
+      let attack_smile_right = document.querySelectorAll(".attack_smile_right");
+      let attack_smile_left = document.querySelectorAll(".attack_smile_left ");
+
+      //角色移動
+      function rule_move() {
+        rule[0].style.left = player1.location.x * unit + "px";
+        rule[0].style.top = player1.location.y * unit + "px";
+
+        rule[1].style.left = player2.location.x * unit + "px";
+        rule[1].style.top = player2.location.y * unit + "px";
+      }
+      function rule_scale() {
+        // rule.style.transform=`scale(${player.location.scale})`
+        rule[0].style.backgroundSize = `${player1.location.scale}%`;
+        rule[1].style.backgroundSize = `${player2.location.scale}%`;
+      }
+      function player_setDirectionX(directionX) {
+        // player1.directionX=directionX
+        if (player1.directionX === "ArrowLeft") {
+          rule[0].style.backgroundImage = "url(wa2.png)";
+          // rule.style.transform='scaleX(-1)'
+        }
+        if (player1.directionX === "ArrowRight") {
+          rule[0].style.backgroundImage = "url(wa.png)";
+          // rule.style.transform='scaleX(1)'
         }
 
+        // player2.directionX=directionX
+        if (player2.directionX === "ArrowLeft") {
+          rule[1].style.backgroundImage = "url(wa2.png)";
+          // rule.style.transform='scaleX(-1)'
+        }
+        if (player2.directionX === "ArrowRight") {
+          rule[1].style.backgroundImage = "url(wa.png)";
+          // rule.style.transform='scaleX(1)'
+        }
+      }
 
+      //角色一開始位置
+      function initialize() {
+        // player1.location.y = 5
+        rule[0].style.left = player1.location.x * unit + "px";
+        rule[0].style.top = player1.location.y * unit + "px";
 
+        // player2.location.y = 5
+        rule[1].style.left = player2.location.x * unit + "px";
+        rule[1].style.top = player2.location.y * unit + "px";
+      }
 
-/*---------------------------控制執行--------------------------------------------*/
-        let player1 = new PlayerTest()
-        let player2 = new PlayerTest({x:9,y:5})
+      //武器位置
+      function wapeLocation(player) {
+        // player1.attackLocation_L.y = 5
+        // player1.attackLocation_R.y = 5
+        if (player1.directionX === "ArrowRight") {
+          // attack_smile_right.style.display='none'
+          // attack_smile_left.style.display='none'
+          attack_smile_right[0].style.left =
+            player1.attackLocation_R.x * unit + "px";
+          attack_smile_right[0].style.top =
+            player1.attackLocation_R.y * unit + "px";
+        }
+        if (player1.directionX === "ArrowLeft") {
+          // attack_smile_right.style.display='none'
+          // attack_smile_left.style.display='none'
+          attack_smile_left[0].style.left =
+            player1.attackLocation_L.x * unit + "px";
+          attack_smile_left[0].style.top =
+            player1.attackLocation_L.y * unit + "px";
+        }
 
-        document.addEventListener('keydown',function(e){
-     
+        // player2.attackLocation_L.y = 5
+        // player2.attackLocation_R.y = 5
+        if (player2.directionX === "ArrowRight") {
+          // attack_smile_right.style.display='none'
+          // attack_smile_left.style.display='none'
+          attack_smile_right[1].style.left =
+            player2.attackLocation_R.x * unit + "px";
+          attack_smile_right[1].style.top =
+            player2.attackLocation_R.y * unit + "px";
+        }
+        if (player2.directionX === "ArrowLeft") {
+          // attack_smile_right.style.display='none'
+          // attack_smile_left.style.display='none'
+          attack_smile_left[1].style.left =
+            player2.attackLocation_L.x * unit + "px";
+          attack_smile_left[1].style.top =
+            player2.attackLocation_L.y * unit + "px";
+        }
+      }
+      //武器顯示
+      function wapeView() {
+        //攻擊顯示(右)
+        if (player1.directionX === "ArrowRight" && player1.attack == true) {
+          attack_smile_right[0].style.display = "block";
+        }
+        //攻擊顯示(左)
+        if (player1.directionX === "ArrowLeft" && player1.attack == true) {
+          attack_smile_left[0].style.display = "block";
+        }
 
-            player1.move(e.code)
-            player1.attackSpace(e.code)
-            player2.move(e.code)
-            player2.attackSpace(e.code)
+        //攻擊顯示(右)
+        if (player2.directionX === "ArrowRight" && player2.attack == true) {
+          attack_smile_right[1].style.display = "block";
+        }
+        //攻擊顯示(左)
+        if (player2.directionX === "ArrowLeft" && player2.attack == true) {
+          attack_smile_left[1].style.display = "block";
+        }
+      }
+      function initialize_t(index, player) {
+        // player1.location.y = 5
+        rule[index].style.left = player.location.x * unit + "px";
+        rule[index].style.top = player.location.y * unit + "px";
+        rule[index].style.display = "block";
+      }
+      function player_setDirectionX_t(index, player) {
+        // player1.directionX=directionX
+        if (player.directionX === "ArrowLeft") {
+          rule[index].style.backgroundImage = "url(./css/wa2.png)";
+          // rule.style.transform='scaleX(-1)'
+        }
+        if (player.directionX === "ArrowRight") {
+          rule[index].style.backgroundImage = "url(./css/wa.png)";
+          // rule.style.transform='scaleX(1)'
+        }
+      }
+      function rule_move_t(index, player) {
+        rule[index].style.left = player.location.x * unit + "px";
+        rule[index].style.top = player.location.y * unit + "px";
+      }
+      function rule_scale_t(index, player) {
+        // rule.style.transform=`scale(${player.location.scale})`
+        rule[index].style.backgroundSize = `${player.location.scale}%`;
+        rule[index].style.backgroundSize = `${player.location.scale}%`;
+      }
+      /*---------------------------控制執行--------------------------------------------*/
+      let player1;
+      let player2;
+      let socket = io();
+      let urlParams = new URLSearchParams(window.location.search);
+      let player_name = urlParams.get("name");
+      let room_id = urlParams.get("id");
+      socket.emit("join-room", player_name, room_id);
+      socket.on("init player", function (player_list) {
+        console.log(player_list);
+        for (let index = 0; index < player_list.length; index++) {
+          let player = player_list[index];
+          initialize_t(index, player);
+          player_setDirectionX_t(index, player);
+        }
+        //wapeLocation();
+        //wapeView();
+        /*player1 = player1;
+        player2 = player2;
+        initialize();
+        player_setDirectionX(player1.directionX);
+        player_setDirectionX(player2.directionX);
+        wapeLocation();
+        wapeView();*/
+      });
+      socket.on("player action", function (player_list) {
+        for (let index = 0; index < player_list.length; index++) {
+          let player = player_list[index];
+          rule_move_t(index, player);
+          rule_scale_t(index, player);
+          player_setDirectionX_t(index, player);
+        }
+      });
+      document.addEventListener("keydown", function (e) {
+        socket.emit("player action", room_id, player_name, e.code);
+        // player1.move(e.code);
+        // player1.attackSpace(e.code);
+        // player2.move(e.code);
+        // player2.attackSpace(e.code);
 
-            rule_move()
-            rule_scale()
-            player_setDirectionX((player1.directionX))
-            player_setDirectionX((player2.directionX))
-            wapeLocation()
-            wapeView()
-        })
+        // rule_move();
+        // rule_scale();
+        // player_setDirectionX(player1.directionX);
+        // player_setDirectionX(player2.directionX);
+        // wapeLocation();
+        // wapeView();
+      });
 
-        document.addEventListener('keyup',function(e){
-                //離開鍵盤 將攻擊顯示關閉
-                if(e.code==='Space'){
-                    if(player1.attack===true){
-                        player1.attack=false;
-                        attack_smile_right[0].style.display='none';
-                        attack_smile_left[0].style.display='none';
-                    }
-                }
+      document.addEventListener("keyup", function (e) {
+        //離開鍵盤 將攻擊顯示關閉
+        /*if (e.code === "Space") {
+          if (player1.attack === true) {
+            player1.attack = false;
+            attack_smile_right[0].style.display = "none";
+            attack_smile_left[0].style.display = "none";
+          }
+        }
 
-                if(e.code==='Space'){
-                    if(player2.attack===true){
-                        player2.attack=false;
-                        attack_smile_right[1].style.display='none';
-                        attack_smile_left[1].style.display='none';
-                    }
-                }
-                //離開鍵盤 回復跳躍，蹲下
-                player1.move2(e.code)
-                player2.move2(e.code)
-                rule_move()
-                rule_scale()
-                wapeLocation()
-                wapeView()
-        })
+        if (e.code === "Space") {
+          if (player2.attack === true) {
+            player2.attack = false;
+            attack_smile_right[1].style.display = "none";
+            attack_smile_left[1].style.display = "none";
+          }
+        }
+        //離開鍵盤 回復跳躍，蹲下
+        player1.move2(e.code);
+        player2.move2(e.code);
+        rule_move();
+        rule_scale();
+        wapeLocation();
+        wapeView();*/
+      });
 
-        
-
-        initialize()
-        player_setDirectionX((player1.directionX))
-        player_setDirectionX((player2.directionX))
-        wapeLocation()
-        wapeView()
+      //   initialize();
+      //   player_setDirectionX(player1.directionX);
+      //   player_setDirectionX(player2.directionX);
+      //   wapeLocation();
+      //   wapeView();
     </script>
-    <script>
-    </script>
-</body>
+    <script></script>
+  </body>
 </html>

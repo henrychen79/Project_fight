@@ -3,6 +3,8 @@ class Player {
     player_name,
     room_id,
     location,
+    player_role,
+    direction_x,
     attackLocation_R,
     attackLocation_L
   ) {
@@ -15,8 +17,9 @@ class Player {
     this.attack = false;
     this.scaleControl = false;
     this.jumpControl = true;
-    this.directionX = "ArrowRight";
+    this.directionX = direction_x || "ArrowRight";
     this.directionY = null;
+    this.playerRole = player_role || "player1";
   }
   player_moveUp() {
     if (this.scaleControl == true) {

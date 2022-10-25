@@ -11,7 +11,14 @@ class game_data {
   }
   init_game_data(room_id, game_obj, player_obj) {
     this.game[room_id] = game_obj;
+    //this.player[player_obj.name] = player_obj;
+  }
+  add_player_data(player_obj) {
     this.player[player_obj.name] = player_obj;
+  }
+  get_game(room_id) {
+    console.log("get gamme", this.game);
+    return this.game[parseInt(room_id)];
   }
   get_player(playerName) {
     return this.player[playerName];
