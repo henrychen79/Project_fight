@@ -1,4 +1,4 @@
-class game {
+module.exports = class game {
   #defaultSize = { w: 500, h: 500 };
   #defaultCounter = 60;
   constructor({ id } = {}) {
@@ -13,4 +13,4 @@ class game {
   setCounter() {
     this.counter = this.counter + 1;
   }
-}
+};

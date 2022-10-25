@@ -259,7 +259,7 @@
       let attack_smile_left = document.querySelector(".attack_smile_left ");
 
       //角色移動
-      function rule_move() {
+      function rule_move(player) {
         rule.style.left = player.location.x * unit + "px";
         rule.style.top = player.location.y * unit + "px";
       }
@@ -306,10 +306,17 @@
       }
 
       /*-------------------------控制-----------------------------------*/
+      function player_move(room_id, player_name, type) {
+        socket.emit("player action", room_id, player_name, type);
+      }
       initialize();
+      socket.emit("join-room", "henry", 1);
+      socket.on("player action", function (player_obj) {
+        rule_move(player_obj);
+      });
       document.addEventListener("keydown", function (e) {
-        socket.emit("chat message", e.code);
-        if (e.code === "ArrowLeft" || e.code === "ArrowRight") {
+        player_move(1, "henry", e.code);
+        /*if (e.code === "ArrowLeft" || e.code === "ArrowRight") {
           player_setDirectionX(e.code);
         }
         if (e.code === "ArrowUp" || e.code === "ArrowDown") {
@@ -347,7 +354,7 @@
           player.attackLocation_L,
           player.location,
           player.attackLocation_R
-        );
+        );*/
       });
 
       document.addEventListener("keyup", function (e) {
@@ -364,9 +371,9 @@
         if (e.code === "ArrowUp") {
           player_moveUp2();
         }
-        rule_move();
-        rule_scale();
-        wapeLocation();
+        //rule_move();
+        //rule_scale();
+        //wapeLocation();
       });
       wapeLocation();
     </script>
