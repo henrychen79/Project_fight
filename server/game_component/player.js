@@ -11,8 +11,8 @@ class Player {
     this.name = player_name;
     this.room_id = room_id;
     (this.location = location || { x: 0, y: 5, scale: 100 }), //預設為:{x:0,y:0,scale:100}
-      (this.attackLocation_R = { x: 1, y: 0 }),
-      (this.attackLocation_L = { x: -1, y: 0 }),
+      (this.attackLocation_R = { x: 1, y: 5 }),
+      (this.attackLocation_L = { x: -1, y: 5 }),
       (this.attackPower = false);
     this.attack = false;
     this.scaleControl = false;

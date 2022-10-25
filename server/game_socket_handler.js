@@ -43,14 +43,25 @@ function conn(socket, io) {
       .to(socket["room"])
       .emit("room-brocast", `${socket["nick"]} has leave this room`);
   });
-  socket.on("player action", (room_id, player_name, type) => {
+  socket.on("player action keydown", (room_id, player_name, type) => {
     console.log("send room_id: ", parseInt(room_id));
     let game = game_data.get_game(room_id);
     console.log("send game: ", game);
     let player = game.get_player(player_name);
     player.move(type);
+    player.attackSpace(type);
     console.log("send player: ", player);
-    io.sockets.to(room_id).emit("player action", game.players);
+    io.sockets.to(room_id).emit("player action keydown", game.players);
+  });
+  socket.on("player action keyup", (room_id, player_name, type) => {
+    console.log("send type: ", type);
+    let game = game_data.get_game(room_id);
+    //console.log("send game: ", game);
+    let player = game.get_player(player_name);
+    if (type === "Space") player.attack = false;
+    player.move2(type);
+    //console.log("send player: ", player);
+    io.sockets.to(room_id).emit("player action keyup", game.players);
   });
 }
 function player_process(player) {
