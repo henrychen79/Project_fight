@@ -17,6 +17,7 @@ class Player {
     this.attack = false;
     this.scaleControl = false;
     this.jumpControl = true;
+    this.hp=100;
     this.directionX = direction_x || "ArrowRight";
     this.directionY = null;
     this.playerRole = player_role || "player1";

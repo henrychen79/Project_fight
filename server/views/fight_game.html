@@ -115,14 +115,17 @@
       }
       .player1_msg {
         border: 1px solid rgb(13, 13, 13);
-        padding: 40px;
-        flex: 3;
+            padding: 40px;
+            flex:3;
+            display: flex;
+            justify-content: flex-end;
       }
       .player1Hp {
         border: 1px solid rgb(255, 255, 255);
         background-color: darkgreen;
         height: 20px;
         border-radius: 10px;
+        width: 100%;
       }
       .time_msg {
         border: 1px solid rgb(219, 120, 15);
@@ -138,6 +141,7 @@
         background-color: darkgreen;
         height: 20px;
         border-radius: 10px;
+        width: 100%;
       }
       .time_msg {
         width: 100%;
@@ -195,6 +199,8 @@
       let hp_View = document.querySelectorAll(".hp_View");
       let attack_smile_right = document.querySelectorAll(".attack_smile_right");
       let attack_smile_left = document.querySelectorAll(".attack_smile_left ");
+      let player1Hp=document.querySelector('.player1Hp')
+      let player2Hp=document.querySelector('.player2Hp')
 
       //角色一開始位置
       function initialize(index, player) {
@@ -261,6 +267,13 @@
         attack_smile_right[index].style.display = "none";
         attack_smile_left[index].style.display = "none";
       }
+
+      function HealthView(player){
+            player1Hp.style.width =`${player[0].hp}%`
+
+            player2Hp.style.width = `${player[1].hp}%`
+           
+      }
       /*---------------------------控制執行--------------------------------------------*/
       let socket = io();
       let urlParams = new URLSearchParams(window.location.search);
@@ -268,6 +281,7 @@
       let room_id = urlParams.get("id");
       socket.emit("join-room", player_name, room_id);
       socket.on("init player", function (player_list) {
+        console.log(player_list)
         for (let index = 0; index < player_list.length; index++) {
           let player = player_list[index];
           initialize(index, player);
@@ -282,14 +296,17 @@
           player_setDirectionX(index, player);
           wapeLocation(index, player);
           wapeView(index, player);
+          
         }
       });
       document.addEventListener("keydown", function (e) {
         socket.emit("player action keydown", room_id, player_name, e.code);
       });
       socket.on("player action keyup", function (player_list) {
+        // console.log("測試",player_list)
         for (let index = 0; index < player_list.length; index++) {
           let player = player_list[index];
+          console.log('測試',player_list)
           //處理離開鍵盤 將攻擊顯示關閉
           attack_smile_display(index, player);
           //離開鍵盤 回復跳躍，蹲下
@@ -297,9 +314,11 @@
           rule_scale(index, player);
           wapeLocation(index, player);
           wapeView(index, player);
+          HealthView(player_list)
         }
       });
       document.addEventListener("keyup", function (e) {
+        console.log( room_id, player_name, e.code)
         socket.emit("player action keyup", room_id, player_name, e.code);
       });
     </script>
