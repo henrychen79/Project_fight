@@ -2,7 +2,6 @@ const game_data_store = require("./models/game_data_store");
 const game_class = require("./game_component/game");
 const player_class = require("./game_component/player");
 let game_data = require("./models/game_data_store");
-console.log(game_data.name);
 function conn(socket, io) {
   socket.on("join-room", (player_name, room_id) => {
     console.log("socket id: ", socket.id);
@@ -106,4 +105,21 @@ function player_process(player) {
   player.move(type);
   console.log("send player: ", player);
 }
+
+//遊玩function
+function chickWin(player1,player2){
+  if(player1.hp===0||player2.hp===0){
+      if(player1.hp===0){
+          player2.isWinner =true;
+          // victory_msg.innerText = 'Player1勝利'
+      }
+      if(player2.hp===0){
+          player1.isWinner =true;
+          // victory_msg.innerText = 'Player2勝利'
+      }
+      return gameStart=false
+  }
+}
+
+
 module.exports.conn = conn;
