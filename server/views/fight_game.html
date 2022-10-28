@@ -153,9 +153,44 @@
       .time_msg > p {
         font-size: 5rem;
       }
+      .victory{
+            position: absolute;
+            display: none;
+            left:50%;
+            top:50%;
+            transform: translate(-50%,-50%);
+            z-index: 2;
+            width: 400px;
+            height: 200px;
+            background-color: rgb(149, 149, 235);
+            border: 1px solid red;
+        }
+        .victory_center{
+            display: flex;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .victory_msg{
+
+        }
+        .victory_btn{
+
+        }
     </style>
   </head>
+  
   <body>
+
+    <div class="victory">
+        <div class="victory_center">
+          <p class="victory_msg">xxx勝利</p><button class="victory_btn">測試</button>
+        </div>
+    </div>
+ 
+
     <div class="main">
       <div class="world">
         <div class="msg_main">
@@ -268,12 +303,29 @@
         attack_smile_left[index].style.display = "none";
       }
 
-      function HealthView(player){
-            player1Hp.style.width =`${player[0].hp}%`
-
-            player2Hp.style.width = `${player[1].hp}%`
-           
+      function HealthView(index, player) {
+        console.log(player);
+        if (index === 0) {
+          player1Hp.style.width = `${player.hp}%`
+        }
+        if(index===1){
+          player2Hp.style.width = `${player.hp}%`;
+        }
+        
       }
+
+             
+      function victory_view(){
+            // if(gameStart===false){
+                if( player1.isWinner ===true){
+                    victory_msg.innerText = 'Player1勝利'
+                }
+                if(player2.isWinner ===true){
+                    victory_msg.innerText = 'Player2勝利'
+                }
+                victory.style.display='block'
+            // }
+        }
       /*---------------------------控制執行--------------------------------------------*/
       let socket = io();
       let urlParams = new URLSearchParams(window.location.search);
@@ -281,7 +333,7 @@
       let room_id = urlParams.get("id");
       socket.emit("join-room", player_name, room_id);
       socket.on("init player", function (player_list) {
-        console.log(player_list)
+        // console.log('測試',player_list);
         for (let index = 0; index < player_list.length; index++) {
           let player = player_list[index];
           initialize(index, player);
@@ -314,13 +366,14 @@
           rule_scale(index, player);
           wapeLocation(index, player);
           wapeView(index, player);
-          HealthView(player_list)
+          HealthView(index,player)
         }
       });
       document.addEventListener("keyup", function (e) {
         console.log( room_id, player_name, e.code)
         socket.emit("player action keyup", room_id, player_name, e.code);
       });
+   
     </script>
     <script></script>
   </body>

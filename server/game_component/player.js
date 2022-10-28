@@ -21,6 +21,7 @@ class Player {
     this.directionX = direction_x || "ArrowRight";
     this.directionY = null;
     this.playerRole = player_role || "player1";
+    this.isWinner=false;
   }
   player_moveUp() {
     if (this.scaleControl == true) {

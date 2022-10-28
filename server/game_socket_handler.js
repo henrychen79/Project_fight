@@ -93,4 +93,21 @@ function attackTest(pl1, pl2) {
     pl1.hp = pl1.hp - 10;
   }
 }
+
+//遊玩function
+function chickWin(player1,player2){
+  if(player1.hp===0||player2.hp===0){
+      if(player1.hp===0){
+          player2.isWinner =true;
+          // victory_msg.innerText = 'Player1勝利'
+      }
+      if(player2.hp===0){
+          player1.isWinner =true;
+          // victory_msg.innerText = 'Player2勝利'
+      }
+      return gameStart=false
+  }
+}
+
+
 module.exports.conn = conn;
