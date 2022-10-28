@@ -1,373 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-      * {
-        padding: 0;
-        margin: 0;
-        list-style: none;
-      }
-      /* :root{
-            --hp_value:100%;
-        } */
-      body {
-        position: relative;
-        width: 100vw;
-        height: 100vh;
-      }
-      .main {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: black;
-      }
-      .world {
-        position: absolute;
-        width: 1000px;
-        height: 600px;
-        background-color: rgb(255, 255, 255);
-      }
-      .rule {
-        display: none;
-        position: absolute;
-        left: 0px;
-        bottom: 0px;
-        width: 100px;
-        height: 100px;
-        /* background-color: brown; */
-        background-image: url(./css/wa.png);
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: 100%;
-        transition: 0.1s all;
-      }
-      .nameId_View {
-        position: absolute;
-        font-weight: bolder;
-        top: -10%;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-      .hp_View {
-        position: absolute;
-        bottom: 5%;
-        left: 50%;
-        transform: translateX(-50%);
-        border: 1px solid red;
-        width: 100%;
-        /* width: var(--hp_value); */
-      }
-      .attack_smile_right {
-        display: none;
-        position: absolute;
-        width: 100px;
-        height: 100px;
-        left: 0;
-        bottom: 0;
-        z-index: 2;
-      }
-      .attack_smile_right::after {
-        content: "";
-        position: absolute;
-        left: -60px;
-        bottom: 20px;
-        width: 100px;
-        height: 100px;
-        border-top-right-radius: 60%;
-        border-bottom-right-radius: 100%;
-        border-top: 1px solid transparent;
-        border-bottom: 5px solid transparent;
-        border-right: 10px solid rgb(180, 0, 0);
-      }
-      .attack_smile_left {
-        display: none;
-        position: absolute;
-        width: 100px;
-        height: 100px;
-        left: 0;
-        bottom: 0;
-        z-index: 2;
-      }
-      .attack_smile_left::before {
-        content: "";
-        position: absolute;
-        width: 100px;
-        height: 100px;
-        left: 60px;
-        bottom: 20px;
-        border-top-left-radius: 60%;
-        border-bottom-left-radius: 100%;
-        border-top: 1px solid transparent;
-        border-bottom: 5px solid transparent;
-        border-left: 10px solid rgb(180, 0, 0);
-      }
-      .msg_main {
-        width: 100%;
-        height: 100px;
-        /* border: 1px solid red; */
-        display: flex;
-      }
-      .player1_msg {
-        border: 1px solid rgb(13, 13, 13);
-            padding: 40px;
-            flex:3;
-            display: flex;
-            justify-content: flex-end;
-      }
-      .player1Hp {
-        border: 1px solid rgb(255, 255, 255);
-        background-color: darkgreen;
-        height: 20px;
-        border-radius: 10px;
-        width: 100%;
-      }
-      .time_msg {
-        border: 1px solid rgb(219, 120, 15);
-        flex: 1;
-      }
-      .player2_msg {
-        border: 1px solid rgb(4, 70, 76);
-        padding: 40px;
-        flex: 3;
-      }
-      .player2Hp {
-        border: 1px solid rgb(255, 255, 255);
-        background-color: darkgreen;
-        height: 20px;
-        border-radius: 10px;
-        width: 100%;
-      }
-      .time_msg {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .time_msg > p {
-        font-size: 5rem;
-      }
-      .victory{
-            position: absolute;
-            display: none;
-            left:50%;
-            top:50%;
-            transform: translate(-50%,-50%);
-            z-index: 2;
-            width: 400px;
-            height: 200px;
-            background-color: rgb(149, 149, 235);
-            border: 1px solid red;
+        .world{
+            position: relative;
+            width: 900px;
+            height: 500px;
+            background-color: black;
         }
-        .victory_center{
-            display: flex;
-            width: 100%;
-            height: 100%;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        .victory_msg{
-
-        }
-        .victory_btn{
-
+        .rule{
+            position:absolute;
+            background-color: brown;
+            /* left: 0px;
+            top:400px; */
+            width: 50px;
+            height: 100px;
         }
     </style>
-  </head>
-  
-  <body>
-
-    <div class="victory">
-        <div class="victory_center">
-          <p class="victory_msg">xxx勝利</p><button class="victory_btn">測試</button>
-        </div>
-    </div>
- 
-
-    <div class="main">
-      <div class="world">
-        <div class="msg_main">
-          <div class="player1_msg">
-            <div class="player1Hp"></div>
-          </div>
-          <div class="time_msg">
-            <p>60</p>
-          </div>
-          <div class="player2_msg">
-            <div class="player2Hp"></div>
-          </div>
-        </div>
-        <div class="rule.list">
-          <div class="rule">
-            <div class="nameId_View">我是誰</div>
-            <div class="hp_View"></div>
-          </div>
-          <div class="attack_smile_right"></div>
-          <div class="attack_smile_left"></div>
-        </div>
-        <div class="rule.list">
-          <div class="rule">
-            <div class="nameId_View">我是誰</div>
-            <div class="hp_View"></div>
-          </div>
-          <div class="attack_smile_right"></div>
-          <div class="attack_smile_left"></div>
-        </div>
-      </div>
+</head>
+<body>
+    <div class="world">
+        <div class="rule"></div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      /*-----------------------------------顯示區----------------------*/
-      let unit = 100; //後端都是以數字存入 ，以最小單位:1 ，去做運算 ，此unit為我要在前端呈現給使用者實際大小，但與 width 相依
-      // let rule = document.querySelector('.rule')
-      // let hp_View = document.querySelector('.hp_View')
-      // let attack_smile_right = document.querySelector('.attack_smile_right')
-      // let attack_smile_left = document.querySelector('.attack_smile_left ')
-      let rule = document.querySelectorAll(".rule");
-      let hp_View = document.querySelectorAll(".hp_View");
-      let attack_smile_right = document.querySelectorAll(".attack_smile_right");
-      let attack_smile_left = document.querySelectorAll(".attack_smile_left ");
-      let player1Hp=document.querySelector('.player1Hp')
-      let player2Hp=document.querySelector('.player2Hp')
+      let rule = document.querySelectorAll('.rule')
 
-      //角色一開始位置
-      function initialize(index, player) {
-        // player1.location.y = 5
-        rule[index].style.left = player.location.x * unit + "px";
-        rule[index].style.top = player.location.y * unit + "px";
-        rule[index].style.display = "block";
+      function rule_View(index,player){
+        console.log(index)
+          let ruleLeft = player.position.x
+          let ruleTop = player.world_Height - player.height - player.position.y
+          console.log(ruleLeft,ruleTop)
+          rule[index].style.left =`${ruleLeft}px`
+          rule[index].style.top = `${ruleTop}px`
       }
-      function player_setDirectionX(index, player) {
-        // player1.directionX=directionX
-        if (player.directionX === "ArrowLeft") {
-          rule[index].style.backgroundImage = "url(./css/wa2.png)";
-          // rule.style.transform='scaleX(-1)'
-        }
-        if (player.directionX === "ArrowRight") {
-          rule[index].style.backgroundImage = "url(./css/wa.png)";
-          // rule.style.transform='scaleX(1)'
-        }
-      }
-      //角色移動
-      function rule_move(index, player) {
-        rule[index].style.left = player.location.x * unit + "px";
-        rule[index].style.top = player.location.y * unit + "px";
-      }
-      function rule_scale(index, player) {
-        // rule.style.transform=`scale(${player.location.scale})`
-        rule[index].style.backgroundSize = `${player.location.scale}%`;
-        rule[index].style.backgroundSize = `${player.location.scale}%`;
-      }
-      //武器位置
-      function wapeLocation(index, player) {
-        // player1.attackLocation_L.y = 5
-        // player1.attackLocation_R.y = 5
-        if (player.directionX === "ArrowRight") {
-          // attack_smile_right.style.display='none'
-          // attack_smile_left.style.display='none'
-          attack_smile_right[index].style.left =
-            player.attackLocation_R.x * unit + "px";
-          attack_smile_right[index].style.top =
-            player.attackLocation_R.y * unit + "px";
-        }
-        if (player.directionX === "ArrowLeft") {
-          // attack_smile_right.style.display='none'
-          // attack_smile_left.style.display='none'
-          attack_smile_left[index].style.left =
-            player.attackLocation_L.x * unit + "px";
-          attack_smile_left[index].style.top =
-            player.attackLocation_L.y * unit + "px";
-        }
-      }
-      //武器顯示
-      function wapeView(index, player) {
-        //攻擊顯示(右)
-        if (player.directionX === "ArrowRight" && player.attack == true) {
-          attack_smile_right[index].style.display = "block";
-        }
-        //攻擊顯示(左)
-        if (player.directionX === "ArrowLeft" && player.attack == true) {
-          attack_smile_left[index].style.display = "block";
-        }
-      }
-      //武器顯示開關
-      function attack_smile_display(index, player) {
-        attack_smile_right[index].style.display = "none";
-        attack_smile_left[index].style.display = "none";
-      }
-
-      function HealthView(index, player) {
-        console.log(player);
-        if (index === 0) {
-          player1Hp.style.width = `${player.hp}%`
-        }
-        if(index===1){
-          player2Hp.style.width = `${player.hp}%`;
-        }
-        
-      }
-
-             
-      function victory_view(){
-            // if(gameStart===false){
-                if( player1.isWinner ===true){
-                    victory_msg.innerText = 'Player1勝利'
-                }
-                if(player2.isWinner ===true){
-                    victory_msg.innerText = 'Player2勝利'
-                }
-                victory.style.display='block'
-            // }
-        }
       /*---------------------------控制執行--------------------------------------------*/
       let socket = io();
       let urlParams = new URLSearchParams(window.location.search);
       let player_name = urlParams.get("name");
       let room_id = urlParams.get("id");
+
       socket.emit("join-room", player_name, room_id);
       socket.on("init player", function (player_list) {
         // console.log('測試',player_list);
         for (let index = 0; index < player_list.length; index++) {
           let player = player_list[index];
-          initialize(index, player);
-          player_setDirectionX(index, player);
+          rule_View(index,player)
         }
       });
+
+      //keydown 事件
       socket.on("player action keydown", function (player_list) {
         for (let index = 0; index < player_list.length; index++) {
           let player = player_list[index];
-          rule_move(index, player);
-          rule_scale(index, player);
-          player_setDirectionX(index, player);
-          wapeLocation(index, player);
-          wapeView(index, player);
-          
+          rule_View(index,player)
         }
       });
       document.addEventListener("keydown", function (e) {
         socket.emit("player action keydown", room_id, player_name, e.code);
       });
+
+
+      //keyup 事件
       socket.on("player action keyup", function (player_list) {
-        // console.log("測試",player_list)
-        for (let index = 0; index < player_list.length; index++) {
-          let player = player_list[index];
-          console.log('測試',player_list)
-          //處理離開鍵盤 將攻擊顯示關閉
-          attack_smile_display(index, player);
-          //離開鍵盤 回復跳躍，蹲下
-          rule_move(index, player);
-          rule_scale(index, player);
-          wapeLocation(index, player);
-          wapeView(index, player);
-          HealthView(index,player)
-        }
+          for (let index = 0; index < player_list.length; index++) {
+            let player = player_list[index];
+            console.log(player)
+            rule_View(index,player)
+          }
       });
       document.addEventListener("keyup", function (e) {
         console.log( room_id, player_name, e.code)

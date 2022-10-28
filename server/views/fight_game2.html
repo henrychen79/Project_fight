@@ -7,94 +7,133 @@
     <title>Document</title>
     <style>
         .world{
-            width: 800px;
-            height: 800px;
-            background-color: seagreen;
+            position: relative;
+            width: 900px;
+            height: 500px;
+            background-color: black;
         }
-        .test{
-            /* width: 100px;
-            height: 100px; */
+        .rule{
+            position:absolute;
             background-color: brown;
-            transform: translate(0px,0px);
-            /* transform-origin: 50% 50% */
+            /* left: 0px;
+            top:400px; */
+            width: 50px;
+            height: 100px;
         }
     </style>
 </head>
 <body>
-    
     <div class="world">
-        <div class="test"></div>
+        <div class="rule"></div>
     </div>
-
-
-
+    
     <script>
-        let test = document.querySelector('.test')
-        let person ={
-            body:4,
-            jump:{x:0,y:0},
-            down:{x:0,y:0}
+//------------------------------------------------------資料區
+ 
+//------------------------------------------------------顯示區
+        let rule = document.querySelector('.rule')
+        
+        function rule_View(){
+            let ruleLeft = player1.position.x
+            let ruleTop = player1.world_Height - player1.height - player1.position.y
+            rule.style.left =`${ruleLeft}px`
+            rule.style.top = `${ruleTop}px`
         }
-        let translateY=0
-        let translateX=0
-        let control_up = true
-        let control_down = true
-        let unit =25;
 
-        function personView(){
-            test.style.width=100+'px'
-            test.style.height=`${person.body*unit}px`
+
+//------------------------------------------------------控制區
+        let time 
+        let player1 = new Player({position:{x:0,y:0},velocity:{x:0,y:0}});
+        document.addEventListener('keydown',function(e){
+            //e.code: ArrowUp ArrowDown ArrowRight ArrowLeft
+            switch(e.code){
+                case 'ArrowLeft':
+                    if(player1.position.y!=0){
+                        return
+                    }
+                    player1.direction='ArrowLeft'
+                    player1.velocity.x=-5
+                break;
+                
+                case 'ArrowRight':
+                    if(player1.position.y!=0){
+                        return
+                    }
+                    player1.direction='ArrowRight'
+                    player1.velocity.x=5
+                break;
+
+                case 'ArrowUp':
+                    player1.direction='ArrowUp'
+                    player1.velocity.y=5
+                break;
+                case 'ArrowDown':
+                    console.log(1)
+                break;
+            }
+        
+            test()
+            player1.move()
+            player1.revise_move()
+            rule_View()
+            // rule_View()
+            // console.log(player1.position.y,player1.direction)
+        })
+        document.addEventListener('keyup',function(e){
+            //e.code: ArrowUp ArrowDown ArrowRight ArrowLeft
+            switch(e.code){
+                case 'ArrowLeft':
+                    player1.velocity.x=0
+                break;
+                
+                case 'ArrowRight':
+                    player1.velocity.x=0
+                break;
+
+                case 'ArrowUp':
+                    // player1.velocity.y=0
+                    player1.direction=''
+                break;
+                case 'ArrowDown':
+                    player1.direction=''
+                break;
+            }
+            test()
+            player1.move()
+            player1.revise_move()
+            rule_View()
+
+        })
+
+        function test(){
+            if((player1.direction==='ArrowUp'||player1.direction==='')&&player1.position.y===0&&player1.nojump===false){
+                time = setInterval(()=>{
+                    player1.move()
+                    player1.revise_move()
+                    rule_View()
+                    if(player1.position.y===0&&player1.nojump===true){
+                        console.log('有我嗎')
+                        clearInterval(time)
+                    }
+                },10)
+            }
         }
-     
-    document.addEventListener('keydown',function(e){
-            console.log(e.code)
-            console.log(person.body)
-            if(e.code === 'ArrowUp') {
-                translateY=translateY-5
-                translateX=translateX
-                test.style.transform=`translate(${translateX}px,${translateY}px)`
-               
-            }
-            if(e.code === 'ArrowDown') {
-                 translateY=translateY+5
-                 translateX=translateX
-                 test.style.transform=`translate(${translateX}px,${translateY}px)`
-            }
-            if(e.code === 'ArrowLeft') {
-                 translateY=translateY
-                 translateX=translateX-5
-                 test.style.transform=`translate(${translateX}px,${translateY}px)`
-            }
-            if(e.code === 'ArrowRight') {
-                 translateY = translateY
-                 translateX = translateX+5
-                 test.style.transform=`translate(${translateX}px,${translateY}px)`
-            }
-            if(e.code==='KeyW'&& control_up===true){
-                person.body = person.body-2;
-                control_up=false
-            }
-            if(e.code==='KeyS'&& control_down===true){
-                person.body = person.body-3;
-                test.style.transform=`translate(scale${(person.body*0.25)})`
-                control_down=false
-            }
-            personView()
-            
-    })  
-    document.addEventListener('keyup',function(e){
-        if(e.code==='KeyW'&& control_up===false){
-            person.body = person.body+2;
-            control_up=true
-        }
-        if(e.code==='KeyS'&& control_down===false){
-            person.body = person.body+3;
-            control_down=true
-        }
-        personView()
-       
-    })
-    personView()     
+
+        player1.move()
+        player1.revise_move()
+        rule_View()
+
+ 
+
+        // function animate(){
+        //     window.requestAnimationFrame(animate)
+        //     player1.move()
+        //     player1.revise_move()
+        //     rule_View()        
+        // }
+        // animate();
+
     </script>
+
 </body>
 </html>
