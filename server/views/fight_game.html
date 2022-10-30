@@ -64,13 +64,47 @@
         /* width: var(--hp_value); */
       }
       .attack_smile_right {
-        display: none;
+        display: block;
         position: absolute;
         width: 100px;
         height: 100px;
         left: 0;
         bottom: 0;
         z-index: 2;
+        opacity: 0;
+        /*transition: opacity 2s ease-in-out;*/
+      }
+      .attack_smile_right.quick {
+        transition: opacity 0.5s ease-in-out;
+        opacity: 1;
+      }
+      .attack_smile_right_tt.lazy {
+        transition: opacity 2s ease-in-out;
+        opacity: 1;
+      }
+      .attack_smile_right_tt {
+        display: block;
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        left: 0;
+        bottom: 0;
+        z-index: 2;
+        opacity: 0;
+        /*transition: opacity 2s ease-in-out;*/
+      }
+      .attack_smile_right_tt::after {
+        content: "";
+        position: absolute;
+        left: -60px;
+        bottom: 20px;
+        width: 100px;
+        height: 100px;
+        border-top-right-radius: 60%;
+        border-bottom-right-radius: 100%;
+        border-top: 1px solid transparent;
+        border-bottom: 5px solid transparent;
+        border-right: 10px solid rgb(180, 0, 180);
       }
       .attack_smile_right::after {
         content: "";
@@ -115,10 +149,10 @@
       }
       .player1_msg {
         border: 1px solid rgb(13, 13, 13);
-            padding: 40px;
-            flex:3;
-            display: flex;
-            justify-content: flex-end;
+        padding: 40px;
+        flex: 3;
+        display: flex;
+        justify-content: flex-end;
       }
       .player1Hp {
         border: 1px solid rgb(255, 255, 255);
@@ -153,43 +187,40 @@
       .time_msg > p {
         font-size: 5rem;
       }
-      .victory{
-            position: absolute;
-            display: none;
-            left:50%;
-            top:50%;
-            transform: translate(-50%,-50%);
-            z-index: 2;
-            width: 400px;
-            height: 200px;
-            background-color: rgb(149, 149, 235);
-            border: 1px solid red;
-        }
-        .victory_center{
-            display: flex;
-            width: 100%;
-            height: 100%;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        .victory_msg{
-
-        }
-        .victory_btn{
-
-        }
+      .victory {
+        position: absolute;
+        display: none;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        width: 400px;
+        height: 200px;
+        background-color: rgb(149, 149, 235);
+        border: 1px solid red;
+      }
+      .victory_center {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+      .victory_msg {
+      }
+      .victory_btn {
+      }
     </style>
   </head>
-  
-  <body>
 
+  <body>
     <div class="victory">
-        <div class="victory_center">
-          <p class="victory_msg">xxx勝利</p><button class="victory_btn">測試</button>
-        </div>
+      <div class="victory_center">
+        <p class="victory_msg">xxx勝利</p>
+        <button class="victory_btn">測試</button>
+      </div>
     </div>
- 
 
     <div class="main">
       <div class="world">
@@ -209,7 +240,7 @@
             <div class="nameId_View">我是誰</div>
             <div class="hp_View"></div>
           </div>
-          <div class="attack_smile_right"></div>
+          <div class="attack_smile_right attack_smile_right_tt"></div>
           <div class="attack_smile_left"></div>
         </div>
         <div class="rule.list">
@@ -234,8 +265,8 @@
       let hp_View = document.querySelectorAll(".hp_View");
       let attack_smile_right = document.querySelectorAll(".attack_smile_right");
       let attack_smile_left = document.querySelectorAll(".attack_smile_left ");
-      let player1Hp=document.querySelector('.player1Hp')
-      let player2Hp=document.querySelector('.player2Hp')
+      let player1Hp = document.querySelector(".player1Hp");
+      let player2Hp = document.querySelector(".player2Hp");
 
       //角色一開始位置
       function initialize(index, player) {
@@ -289,9 +320,22 @@
       //武器顯示
       function wapeView(index, player) {
         //攻擊顯示(右)
+        console.log("ggg  ", player);
         if (player.directionX === "ArrowRight" && player.attack == true) {
-          attack_smile_right[index].style.display = "block";
+          //attack_smile_right[index].style.transition = " ";
+          attack_smile_right[index].classList.remove("attack_smile_right_tt");
+          attack_smile_right[index].classList.add("attack_smile_right");
+          attack_smile_right[index].classList.add("quick");
+          //attack_smile_right[index].style.opc = "block";
         }
+        if (player.directionX === "ArrowRight" && player.attackLong == true) {
+          //attack_smile_right[index].style.transition = "opacity 2s linear";
+          attack_smile_right[index].classList.remove("attack_smile_right");
+          attack_smile_right[index].classList.add("attack_smile_right_tt");
+          attack_smile_right[index].classList.add("lazy");
+          //attack_smile_right[index].style.opc = "block";
+        }
+
         //攻擊顯示(左)
         if (player.directionX === "ArrowLeft" && player.attack == true) {
           attack_smile_left[index].style.display = "block";
@@ -299,33 +343,35 @@
       }
       //武器顯示開關
       function attack_smile_display(index, player) {
-        attack_smile_right[index].style.display = "none";
-        attack_smile_left[index].style.display = "none";
+        //attack_smile_right[index].style.display = "none";
+        ///attack_smile_left[index].style.display = "none";
+        console.log("attack_smile_display", attack_smile_right[index]);
+        //attack_smile_right[index].style.opacity = "0";
+        attack_smile_right[index].classList.remove("lazy");
+        attack_smile_right[index].classList.remove("quick");
       }
 
       function HealthView(index, player) {
         console.log(player);
         if (index === 0) {
-          player1Hp.style.width = `${player.hp}%`
+          player1Hp.style.width = `${player.hp}%`;
         }
-        if(index===1){
+        if (index === 1) {
           player2Hp.style.width = `${player.hp}%`;
         }
-        
       }
 
-             
-      function victory_view(){
-            // if(gameStart===false){
-                if( player1.isWinner ===true){
-                    victory_msg.innerText = 'Player1勝利'
-                }
-                if(player2.isWinner ===true){
-                    victory_msg.innerText = 'Player2勝利'
-                }
-                victory.style.display='block'
-            // }
+      function victory_view() {
+        // if(gameStart===false){
+        if (player1.isWinner === true) {
+          victory_msg.innerText = "Player1勝利";
         }
+        if (player2.isWinner === true) {
+          victory_msg.innerText = "Player2勝利";
+        }
+        victory.style.display = "block";
+        // }
+      }
       /*---------------------------控制執行--------------------------------------------*/
       let socket = io();
       let urlParams = new URLSearchParams(window.location.search);
@@ -348,7 +394,6 @@
           player_setDirectionX(index, player);
           wapeLocation(index, player);
           wapeView(index, player);
-          
         }
       });
       document.addEventListener("keydown", function (e) {
@@ -358,7 +403,7 @@
         // console.log("測試",player_list)
         for (let index = 0; index < player_list.length; index++) {
           let player = player_list[index];
-          console.log('測試',player_list)
+          console.log("測試", player_list);
           //處理離開鍵盤 將攻擊顯示關閉
           attack_smile_display(index, player);
           //離開鍵盤 回復跳躍，蹲下
@@ -366,14 +411,13 @@
           rule_scale(index, player);
           wapeLocation(index, player);
           wapeView(index, player);
-          HealthView(index,player)
+          HealthView(index, player);
         }
       });
       document.addEventListener("keyup", function (e) {
-        console.log( room_id, player_name, e.code)
+        console.log(room_id, player_name, e.code);
         socket.emit("player action keyup", room_id, player_name, e.code);
       });
-   
     </script>
     <script></script>
   </body>

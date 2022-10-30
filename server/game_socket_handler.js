@@ -44,18 +44,37 @@ function conn(socket, io) {
   socket.on("player action keyup", (room_id, player_name, type) => {
     let game = game_data.get_game(room_id);
     let player = game.get_player(player_name);
-    if (game.players.length >= 2) {
-      let pl1 = game.players[0];
+    if (game.players.length >= 2 && type === "Space") {
+      setTimeout(()=>{
+        let pl1 = game.players[0];
       let pl2 = game.players[1];
-      attackTest(pl1, pl2);
-    }
-    if (type === "Space") player.attack = false;
-    player.move2(type);
+      player.attack = false;
+        attackTest(pl1, pl2);
+        player.move2(type);
     io.sockets.to(room_id).emit("player action keyup", game.players);
+      },500)
+    }
+    else if (game.players.length >= 2 && type === "KeyQ") {
+      console.log('KeyQKeyQKeyQKeyQKeyQ');
+      setTimeout(()=>{
+        let pl1 = game.players[0];
+      let pl2 = game.players[1];
+        attackTest20(pl1, pl2);
+        player.attackLong = false;
+        player.move2(type);
+    io.sockets.to(room_id).emit("player action keyup", game.players);
+      },2000)
+    } 
+    else
+    {
+      player.move2(type);
+    io.sockets.to(room_id).emit("player action keyup", game.players);
+    }
   });
 }
 
 function attackTest(pl1, pl2) {
+  console.log(pl1, pl2);
   if (
     pl1.attackLocation_R.x === pl2.location.x &&
     pl1.directionX === "ArrowRight" &&
@@ -91,6 +110,44 @@ function attackTest(pl1, pl2) {
     pl1.location.scale === 100
   ) {
     pl1.hp = pl1.hp - 10;
+  }
+}
+function attackTest20(pl1, pl2) {
+  if (
+    pl1.attackLocation_R.x === pl2.location.x &&
+    pl1.directionX === "ArrowRight" &&
+    pl1.attackLong === true &&
+    pl2.location.y === 5 &&
+    pl2.location.scale === 100
+  ) {
+    pl2.hp = pl2.hp - 50;
+  }
+  if (
+    pl1.attackLocation_L.x === pl2.location.x &&
+    pl1.directionX === "ArrowLeft" &&
+    pl1.attackLong === true &&
+    pl2.location.y === 5 &&
+    pl2.location.scale === 100
+  ) {
+    pl2.hp = pl2.hp - 50;
+  }
+  if (
+    pl2.attackLocation_R.x === pl1.location.x &&
+    pl2.directionX === "ArrowRight" &&
+    pl2.attack === true &&
+    pl1.location.y === 5 &&
+    pl1.location.scale === 100
+  ) {
+    pl1.hp = pl1.hp - 50;
+  }
+  if (
+    pl2.attackLocation_L.x === pl1.location.x &&
+    pl2.directionX === "ArrowLeft" &&
+    pl2.attack === true &&
+    pl1.location.y === 5 &&
+    pl1.location.scale === 100
+  ) {
+    pl1.hp = pl1.hp - 50;
   }
 }
 

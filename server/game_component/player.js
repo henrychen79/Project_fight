@@ -15,6 +15,7 @@ class Player {
       (this.attackLocation_L = { x: -1, y: 5 }),
       (this.attackPower = false);
     this.attack = false;
+    this.attackLong = false;
     this.scaleControl = false;
     this.jumpControl = true;
     this.hp=100;
@@ -136,6 +137,7 @@ class Player {
   }
   //攻擊設定
   attackSpace(type) {
+    console.log(type);
     if (type === "Space") {
       //蹲下無法攻擊
       if (type === "Space" && this.location.scale === 50) {
@@ -148,6 +150,19 @@ class Player {
 
       //設成true，讓畫面開啟
       this.attack = true;
+    }
+    if (type === "KeyQ") {
+      //蹲下無法攻擊
+      if (type === "KeyQ" && this.location.scale === 50) {
+        return;
+      }
+      //跳躍狀態 無法攻擊
+      if (type === "KeyQ" && this.location.y === 4) {
+        return;
+      }
+
+      //設成true，讓畫面開啟
+      this.attackLong = true;
     }
   }
 }
