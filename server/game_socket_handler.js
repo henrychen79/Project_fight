@@ -8,7 +8,7 @@ function conn(socket, io) {
   let time
   socket.on("join-room", (player_name, room_id) => {
     if (1) {
-      console.log("check_room_exist");
+      // console.log("check_room_exist");
       let game = game_data_store.check_room_exist(room_id);
       if (!game) {
         game = new game_class({ id: room_id });
@@ -17,18 +17,10 @@ function conn(socket, io) {
         game.add_players(player);
       }
       if (!game.check_player_exist(player_name)) {
-        var player = new player_class(
-          player_name,
-          room_id,
-          {
-            x: 9,
-            y: 5,
-            scale: 100,
-          },
-          "player2",
-          "ArrowLeft"
+        var player2 = new player_class(
+          {position:{x:850,y:0},velocity:{x:0,y:0}},player_name, room_id
         );
-        game.add_players(player);
+        game.add_players(player2);
       }
       socket.join(room_id);
       io.sockets.to(room_id).emit("init player", game.players);
@@ -37,8 +29,8 @@ function conn(socket, io) {
 
 
   socket.on("disconnect", (ev) => {
-    console.log("user disconnect:; ", ev);
-    console.log("user disconnect", socket["room"]);
+    // console.log("user disconnect:; ", ev);
+    // console.log("user disconnect", socket["room"]);
     io.sockets
       .to(socket["room"])
       .emit("room-brocast", `${socket["nick"]} has leave this room`);
@@ -49,87 +41,109 @@ function conn(socket, io) {
   socket.on("player action keydown", (room_id, player_name, type) => {
     let game = game_data.get_game(room_id);
     let player = game.get_player(player_name);
-    if(type ==='ArrowLeft'){
-        if(player.position.y!=0){
-          return
-      }
-      player.direction='ArrowLeft'
-      player.velocity.x=-5
-      
-    }
+    // console.log('測試測試測試測試測試測試，第0位',game.players[0])
+    // console.log('測試測試測試測試測試測試，第1位',game.players[1])
+    switch(type){
+      case 'ArrowLeft':
+        player.move_Left(type)
+      break;
 
-    if(type ==='ArrowRight'){
-      if(player.position.y!=0){
-        return
-      }
-      player.direction='ArrowRight'
-      player.velocity.x=5
-    }
+      case 'ArrowRight':
+        player.move_Right(type)
+      break;
 
-    if(type ==='ArrowUp'){
-      player.direction='ArrowUp'
-      player.velocity.y=5
-      
-    }
-    function test(){
-      if((player.direction==='ArrowUp'||player.direction==='')&&player.position.y===0&&player.nojump===false){
-          time = setInterval(()=>{
-              player.move(type)
-              player.revise_move(type)
-              io.sockets.to(room_id).emit("player action keydown", game.players);
-              if(player.position.y===0&&player.nojump===true){
-                  console.log('有我嗎')
-                  clearInterval(time)
-              }
-          },10)
-      }
-    }
+      case 'ArrowUp':
+        player.move_Up(type)
+      break;
 
-    player.move(type)
-    test()
+      case 'ArrowDown':
+        player.move_Down(type)     
+      break;
+      case 'Space':
+        player.attackControl()
+        attack(game.players[0],game.players[1])
+      break;
+    }
+    console.log('keydown資料測試',player)
     io.sockets.to(room_id).emit("player action keydown", game.players);
   });
 
 
 
-
+  let lock = false//此布林，放全域
   socket.on("player action keyup", (room_id, player_name, type) => {
-    
+    let time
     let game = game_data.get_game(room_id);
     let player = game.get_player(player_name);
 
-    if(type ==='ArrowLeft'){
-      player.velocity.x=0
-    }
-
-    if(type ==='ArrowRight'){
-      player.velocity.x=0
-    }
-
-    if(type ==='ArrowUp'){
-      player.direction=''
-      
-    }
-
-    function test(){
-      if((player.direction==='ArrowUp'||player.direction==='')&&player.position.y===0&&player.nojump===false){
-        console.log('123332',player.direction,player.position.y,player.nojump)
-          time = setInterval(()=>{
-              player.move(type)
-              player.revise_move(type)
-              io.sockets.to(room_id).emit("player action keydown", game.players);
-              if(player.position.y===0&&player.nojump===true){
-                  console.log('有我嗎')
-                  clearInterval(time)
-              }
-          },10)
+    function chickUp(){
+      if(player.nojump===false&&lock===false){
+        lock=true
+        time=setInterval(()=>{
+          if(player.nojump===true){
+            clearInterval(time)
+            lock=false
+            player.direction=''
+            console.log('keyup資料測試',player)
+          }
+          io.sockets.to(room_id).emit("player action keydown", game.players);
+        },10)
       }
     }
-    
-    test(player,room_id,game.players)
+
+    switch(type){
+      case 'ArrowLeft':
+        type=''
+        player.move_Left(type)
+      break;
+
+      case 'ArrowRight':
+        type=''
+        player.move_Right(type)
+      break;
+
+      case 'ArrowUp':
+        if(player.position.y!=0){
+          chickUp()
+        }
+      break;
+
+      case 'ArrowDown':
+        type=''
+        player.move_Down(type) 
+      break;
+    }
     io.sockets.to(room_id).emit("player action keyup", game.players);
-  
   });
+}
+
+function attack(player1,player2){
+  player1.weapon.position.x = player1.position.x
+  player2.weapon.position.x = player2.position.x
+
+  //玩家1 揍 玩家2 判斷
+  if( ((player1.weapon.position.x+player1.width)<=(player2.position.x)) 
+      &&((player2.position.x)<=(player1.weapon.position.x+player1.width*2))
+      && player1.attack===true
+      &&player2.position.y===0){
+      player2.hp = player2.hp-5;
+      console.log('玩家1開扁')
+  }
+
+  //玩家2 揍 玩家1 判斷
+  // console.log(player2.weapon.position.x-player2.width,player1.position.x+player1.width)
+  // console.log(player1.position.x+player1.width,player2.position.x)
+
+  if(((player2.weapon.position.x-player2.width)<=(player1.position.x+player1.width))
+      &&((player1.position.x+player1.width)<=(player2.position.x))
+      && player2.attack===true
+      &&player1.position.y===0){
+
+      player1.hp = player1.hp-5;
+      console.log('玩家2開扁')
+      
+  }
+
 }
 
 module.exports.conn = conn;
