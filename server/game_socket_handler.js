@@ -45,30 +45,27 @@ function conn(socket, io) {
     let game = game_data.get_game(room_id);
     let player = game.get_player(player_name);
     if (game.players.length >= 2 && type === "Space") {
-      setTimeout(()=>{
+      setTimeout(() => {
         let pl1 = game.players[0];
-      let pl2 = game.players[1];
-      player.attack = false;
+        let pl2 = game.players[1];
         attackTest(pl1, pl2);
         player.move2(type);
-    io.sockets.to(room_id).emit("player action keyup", game.players);
-      },500)
-    }
-    else if (game.players.length >= 2 && type === "KeyQ") {
-      console.log('KeyQKeyQKeyQKeyQKeyQ');
-      setTimeout(()=>{
+        player.attack = false;
+        io.sockets.to(room_id).emit("player action keyup", game.players);
+      }, 500);
+    } else if (game.players.length >= 2 && type === "KeyQ") {
+      console.log("KeyQKeyQKeyQKeyQKeyQ");
+      setTimeout(() => {
         let pl1 = game.players[0];
-      let pl2 = game.players[1];
+        let pl2 = game.players[1];
         attackTest20(pl1, pl2);
         player.attackLong = false;
         player.move2(type);
-    io.sockets.to(room_id).emit("player action keyup", game.players);
-      },2000)
-    } 
-    else
-    {
+        io.sockets.to(room_id).emit("player action keyup", game.players);
+      }, 2000);
+    } else {
       player.move2(type);
-    io.sockets.to(room_id).emit("player action keyup", game.players);
+      io.sockets.to(room_id).emit("player action keyup", game.players);
     }
   });
 }
@@ -134,7 +131,7 @@ function attackTest20(pl1, pl2) {
   if (
     pl2.attackLocation_R.x === pl1.location.x &&
     pl2.directionX === "ArrowRight" &&
-    pl2.attack === true &&
+    pl2.attackLong === true &&
     pl1.location.y === 5 &&
     pl1.location.scale === 100
   ) {
@@ -143,7 +140,7 @@ function attackTest20(pl1, pl2) {
   if (
     pl2.attackLocation_L.x === pl1.location.x &&
     pl2.directionX === "ArrowLeft" &&
-    pl2.attack === true &&
+    pl2.attackLong === true &&
     pl1.location.y === 5 &&
     pl1.location.scale === 100
   ) {
@@ -152,19 +149,18 @@ function attackTest20(pl1, pl2) {
 }
 
 //遊玩function
-function chickWin(player1,player2){
-  if(player1.hp===0||player2.hp===0){
-      if(player1.hp===0){
-          player2.isWinner =true;
-          // victory_msg.innerText = 'Player1勝利'
-      }
-      if(player2.hp===0){
-          player1.isWinner =true;
-          // victory_msg.innerText = 'Player2勝利'
-      }
-      return gameStart=false
+function chickWin(player1, player2) {
+  if (player1.hp === 0 || player2.hp === 0) {
+    if (player1.hp === 0) {
+      player2.isWinner = true;
+      // victory_msg.innerText = 'Player1勝利'
+    }
+    if (player2.hp === 0) {
+      player1.isWinner = true;
+      // victory_msg.innerText = 'Player2勝利'
+    }
+    return (gameStart = false);
   }
 }
-
 
 module.exports.conn = conn;

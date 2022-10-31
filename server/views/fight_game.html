@@ -120,13 +120,14 @@
         border-right: 10px solid rgb(180, 0, 0);
       }
       .attack_smile_left {
-        display: none;
+        display: block;
         position: absolute;
         width: 100px;
         height: 100px;
         left: 0;
         bottom: 0;
         z-index: 2;
+        opacity: 0;
       }
       .attack_smile_left::before {
         content: "";
@@ -140,6 +141,38 @@
         border-top: 1px solid transparent;
         border-bottom: 5px solid transparent;
         border-left: 10px solid rgb(180, 0, 0);
+      }
+      .attack_smile_left.quick {
+        transition: opacity 0.5s ease-in-out;
+        opacity: 1;
+      }
+      .attack_smile_left_tt.lazy {
+        transition: opacity 2s ease-in-out;
+        opacity: 1;
+      }
+      .attack_smile_left_tt {
+        display: block;
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        left: 0;
+        bottom: 0;
+        z-index: 2;
+        opacity: 0;
+        /*transition: opacity 2s ease-in-out;*/
+      }
+      .attack_smile_left_tt::before {
+        content: "";
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        left: 60px;
+        bottom: 20px;
+        border-top-left-radius: 60%;
+        border-bottom-left-radius: 100%;
+        border-top: 1px solid transparent;
+        border-bottom: 5px solid transparent;
+        border-left: 10px solid rgb(180, 0, 180);
       }
       .msg_main {
         width: 100%;
@@ -207,10 +240,6 @@
         align-items: center;
         flex-direction: column;
       }
-      .victory_msg {
-      }
-      .victory_btn {
-      }
     </style>
   </head>
 
@@ -241,15 +270,15 @@
             <div class="hp_View"></div>
           </div>
           <div class="attack_smile_right attack_smile_right_tt"></div>
-          <div class="attack_smile_left"></div>
+          <div class="attack_smile_left attack_smile_left_tt"></div>
         </div>
         <div class="rule.list">
           <div class="rule">
             <div class="nameId_View">我是誰</div>
             <div class="hp_View"></div>
           </div>
-          <div class="attack_smile_right"></div>
-          <div class="attack_smile_left"></div>
+          <div class="attack_smile_right attack_smile_right_tt"></div>
+          <div class="attack_smile_left attack_smile_left_tt"></div>
         </div>
       </div>
     </div>
@@ -324,7 +353,7 @@
         if (player.directionX === "ArrowRight" && player.attack == true) {
           //attack_smile_right[index].style.transition = " ";
           attack_smile_right[index].classList.remove("attack_smile_right_tt");
-          attack_smile_right[index].classList.add("attack_smile_rightq");
+          attack_smile_right[index].classList.add("attack_smile_right");
           attack_smile_right[index].classList.add("quick");
           //attack_smile_right[index].style.opc = "block";
         }
@@ -338,7 +367,17 @@
 
         //攻擊顯示(左)
         if (player.directionX === "ArrowLeft" && player.attack == true) {
-          attack_smile_left[index].style.display = "block";
+          //attack_smile_left[index].style.display = "block";
+          attack_smile_left[index].classList.remove("attack_smile_left_tt");
+          attack_smile_left[index].classList.add("attack_smile_left");
+          attack_smile_left[index].classList.add("quick");
+        }
+        if (player.directionX === "ArrowLeft" && player.attackLong == true) {
+          //attack_smile_right[index].style.transition = "opacity 2s linear";
+          attack_smile_left[index].classList.remove("attack_smile_left");
+          attack_smile_left[index].classList.add("attack_smile_left_tt");
+          attack_smile_left[index].classList.add("lazy");
+          //attack_smile_right[index].style.opc = "block";
         }
       }
       //武器顯示開關
@@ -347,8 +386,18 @@
         ///attack_smile_left[index].style.display = "none";
         console.log("attack_smile_display", attack_smile_right[index]);
         //attack_smile_right[index].style.opacity = "0";
-        attack_smile_right[index].classList.remove("lazy");
-        attack_smile_right[index].classList.remove("quick");
+        // attack_smile_right[index].classList.remove("lazy");
+        // attack_smile_right[index].classList.remove("quick");
+        // attack_smile_left[index].classList.remove("lazy");
+        // attack_smile_left[index].classList.remove("quick");
+        if (player.directionX === "ArrowRight" && player.attack == false) {
+          attack_smile_right[index].classList.remove("lazy");
+          attack_smile_right[index].classList.remove("quick");
+        }
+        if (player.directionX === "ArrowLeft" && player.attack == false) {
+          attack_smile_left[index].classList.remove("lazy");
+          attack_smile_left[index].classList.remove("quick");
+        }
       }
 
       function HealthView(index, player) {
