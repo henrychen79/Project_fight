@@ -247,7 +247,7 @@
     <div class="victory">
       <div class="victory_center">
         <p class="victory_msg">xxx勝利</p>
-        <button class="victory_btn">測試</button>
+        <button class="victory_btn">重新遊戲</button>
       </div>
     </div>
 
@@ -296,6 +296,8 @@
       let attack_smile_left = document.querySelectorAll(".attack_smile_left ");
       let player1Hp = document.querySelector(".player1Hp");
       let player2Hp = document.querySelector(".player2Hp");
+      let victory = document.querySelector(".victory");
+      let victory_msg = document.querySelector(".victory_msg");
 
       //角色一開始位置
       function initialize(index, player) {
@@ -410,7 +412,7 @@
         }
       }
 
-      function victory_view() {
+      function victory_view(player1, player2) {
         // if(gameStart===false){
         if (player1.isWinner === true) {
           victory_msg.innerText = "Player1勝利";
@@ -434,6 +436,9 @@
           initialize(index, player);
           player_setDirectionX(index, player);
         }
+      });
+      socket.on("game over", function (player_list) {
+        victory_view(player_list[0], player_list[1]);
       });
       socket.on("player action keydown", function (player_list) {
         for (let index = 0; index < player_list.length; index++) {

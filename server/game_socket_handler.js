@@ -52,6 +52,9 @@ function conn(socket, io) {
         player.move2(type);
         player.attack = false;
         io.sockets.to(room_id).emit("player action keyup", game.players);
+        if (checkWin(pl1, pl2)) {
+          io.sockets.to(room_id).emit("game over", game.players);
+        }
       }, 500);
     } else if (game.players.length >= 2 && type === "KeyQ") {
       console.log("KeyQKeyQKeyQKeyQKeyQ");
@@ -62,6 +65,9 @@ function conn(socket, io) {
         player.attackLong = false;
         player.move2(type);
         io.sockets.to(room_id).emit("player action keyup", game.players);
+        if (checkWin(pl1, pl2)) {
+          io.sockets.to(room_id).emit("game over", game.players);
+        }
       }, 2000);
     } else {
       player.move2(type);
@@ -149,7 +155,7 @@ function attackTest20(pl1, pl2) {
 }
 
 //遊玩function
-function chickWin(player1, player2) {
+function checkWin(player1, player2) {
   if (player1.hp === 0 || player2.hp === 0) {
     if (player1.hp === 0) {
       player2.isWinner = true;
@@ -159,8 +165,8 @@ function chickWin(player1, player2) {
       player1.isWinner = true;
       // victory_msg.innerText = 'Player2勝利'
     }
-    return (gameStart = false);
-  }
+    return true;
+  } else return false;
 }
 
 module.exports.conn = conn;
