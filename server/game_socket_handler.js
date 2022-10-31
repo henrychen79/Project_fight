@@ -39,6 +39,8 @@ function conn(socket, io) {
 
 
   socket.on("player action keydown", (room_id, player_name, type) => {
+    let room_num = io.sockets.adapter.rooms.get(room_id).size //該房間有幾人
+    console.log('房間人測試測試測試',room_num)
     let game = game_data.get_game(room_id);
     let player = game.get_player(player_name);
     // console.log('測試測試測試測試測試測試，第0位',game.players[0])
@@ -53,7 +55,8 @@ function conn(socket, io) {
       break;
 
       case 'ArrowUp':
-        player.move_Up(type)
+        // player.move_Up(type)
+        player.move_up2(type)
       break;
 
       case 'ArrowDown':
@@ -61,10 +64,10 @@ function conn(socket, io) {
       break;
       case 'Space':
         player.attackControl()
-        attack(game.players[0],game.players[1])
+        attack(game.players[0],game.players[1],room_num)
       break;
     }
-    console.log('keydown資料測試',player)
+    // console.log('keydown資料測試',player)
     io.sockets.to(room_id).emit("player action keydown", game.players);
   });
 
@@ -76,20 +79,20 @@ function conn(socket, io) {
     let game = game_data.get_game(room_id);
     let player = game.get_player(player_name);
 
-    function chickUp(){
-      if(player.nojump===false&&lock===false){
-        lock=true
-        time=setInterval(()=>{
-          if(player.nojump===true){
-            clearInterval(time)
-            lock=false
-            player.direction=''
-            console.log('keyup資料測試',player)
-          }
-          io.sockets.to(room_id).emit("player action keydown", game.players);
-        },10)
-      }
-    }
+    // function chickUp(){
+    //   if(player.nojump===false&&lock===false){
+    //     lock=true
+    //     time=setInterval(()=>{
+    //       if(player.nojump===true){
+    //         clearInterval(time)
+    //         lock=false
+    //         player.direction=''
+    //         console.log('keyup資料測試',player)
+    //       }
+    //       io.sockets.to(room_id).emit("player action keydown", game.players);
+    //     },10)
+    //   }
+    // }
 
     switch(type){
       case 'ArrowLeft':
@@ -103,9 +106,10 @@ function conn(socket, io) {
       break;
 
       case 'ArrowUp':
-        if(player.position.y!=0){
-          chickUp()
-        }
+        player.move_up2(type)
+        // if(player.position.y!=0){
+        //   chickUp()
+        // }
       break;
 
       case 'ArrowDown':
@@ -117,7 +121,11 @@ function conn(socket, io) {
   });
 }
 
-function attack(player1,player2){
+//list 設個保護
+function attack(player1,player2,list){
+  if(list<2){
+    return
+  }
   player1.weapon.position.x = player1.position.x
   player2.weapon.position.x = player2.position.x
 
@@ -127,7 +135,7 @@ function attack(player1,player2){
       && player1.attack===true
       &&player2.position.y===0){
       player2.hp = player2.hp-5;
-      console.log('玩家1開扁')
+      // console.log('玩家1開扁')
   }
 
   //玩家2 揍 玩家1 判斷
@@ -140,8 +148,7 @@ function attack(player1,player2){
       &&player1.position.y===0){
 
       player1.hp = player1.hp-5;
-      console.log('玩家2開扁')
-      
+      // console.log('玩家2開扁')  
   }
 
 }

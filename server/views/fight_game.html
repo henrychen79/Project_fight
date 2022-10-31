@@ -42,6 +42,10 @@
           align-items: center;
           justify-content: center;
 
+        }
+        .rule{
+          display: none;
+          position: absolute;
         }   
         .rule_two{
           border: 1px solid rgb(235, 203, 44);
@@ -110,6 +114,28 @@
           height: 100px;
           z-index: 1;
         }
+        .boxAnime{
+            position: absolute;
+            animation: jump 1s linear ;
+        }
+        @keyframes jump{
+            0%{
+              top: 400px;
+            }
+            40%{
+              top: 200px;
+            }
+            50%{
+              top: 200px;
+            }
+            60%{
+              top: 200px;
+            }
+            100%{
+              top: 400px; 
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -137,32 +163,46 @@
       let rule = document.querySelectorAll('.rule')
       let weapon_status = document.querySelectorAll('.weapon_status')
       let ruleHp = document.querySelectorAll('.ruleHp')
-
+      let lock = false
      
       function rule_View(index,player){
-
+          
           let ruleLeft = player.position.x
-          let ruleTop = player.world_Height - player.height - player.position.y
+          // let ruleTop = player.world_Height - player.height - player.position.y
 
+          if(player.nojump===false&&lock===false){
+            lock=true;
+            rule[index].classList.add('boxAnime')
+            setTimeout(()=>{
+              rule[index].classList.remove('boxAnime')
+              lock=false
+            },1000)
+          }
+          rule[index].style.display='block'
           rule[index].style.left =`${ruleLeft}px`
-          rule[index].style.top = `${ruleTop}px`
+          rule[index].style.top = `${400}px`
+          // rule[index].style.top = `${ruleTop}px`
       }
       function weapon_View(index,arr){
-            if(arr.length<2){
-              return
-            }
+          
             arr[index].weapon.position.x = arr[index].position.x
             arr[index].weapon.position.y =400
+            weapon_status[index].style.top = `${arr[index].weapon.position.y}px`
+            if(index%2===0){
+              weapon_status[index].style.left =`${50+arr[index].weapon.position.x}px`
+            }else{
+              weapon_status[index].style.left =`${(-50)+arr[index].weapon.position.x}px`
+            }
 
-            let weapon_oneLeft = arr[0].weapon.position.x
-            let weapon_oneTop = arr[0].weapon.position.y
-            weapon_status[0].style.left =`${50+weapon_oneLeft}px`
-            weapon_status[0].style.top = `${weapon_oneTop}px` 
+            // let weapon_oneLeft = arr[0].weapon.position.x
+            // let weapon_oneTop = arr[0].weapon.position.y
+            // weapon_status[0].style.left =`${50+weapon_oneLeft}px`
+            // weapon_status[0].style.top = `${weapon_oneTop}px` 
             
-            let weapon_twoLeft = arr[1].weapon.position.x
-            let weapon_twoTop = arr[1].weapon.position.y
-            weapon_status[1].style.left =`${(-50)+weapon_twoLeft}px`
-            weapon_status[1].style.top = `${weapon_twoTop}px`  
+            // let weapon_twoLeft = arr[1].weapon.position.x
+            // let weapon_twoTop = arr[1].weapon.position.y
+            // weapon_status[1].style.left =`${(-50)+weapon_twoLeft}px`
+            // weapon_status[1].style.top = `${weapon_twoTop}px`  
       }
 
       function attack_view_open(index,arr){
@@ -193,9 +233,7 @@
         player_list.forEach(function(player,index,arr){
           rule_View(index,player)
           weapon_View(index,arr)
-          
         })
-     
         // for (let index = 0; index < player_list.length; index++) {
         //   let player = player_list[index];
         //   rule_View(index,player)

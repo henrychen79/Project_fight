@@ -31,8 +31,8 @@ class Player{
             return
         }
         
-        this.velocity.x=-5
-        if(this.position.x===0){
+        this.velocity.x=-20
+        if(this.position.x<=0){
             this.position.x=0
         }else{
             this.position.x = this.position.x + this.velocity.x
@@ -45,8 +45,8 @@ class Player{
             return
         }
         
-        this.velocity.x=5
-        if(this.position.x===(this.world_Width-this.width)){
+        this.velocity.x=20
+        if(this.position.x>=(this.world_Width-this.width)){
             this.position.x=850
         }else{
             this.position.x = this.position.x + this.velocity.x
@@ -78,7 +78,24 @@ class Player{
                 this.position.y = this.position.y + this.velocity.y
             },10)
             
+            //-------------------------
+      
         }
+    }
+    move_up2(type){
+        this.direction=type
+        if(this.direction='ArrowUp'&&this.nojump!=false){
+            this.nojump=false
+            this.position.y=200;
+            let upTime
+            upTime=setTimeout(()=>{
+                this.nojump=true
+                this.position.y=0
+                // console.log('class測試測試測試',this.position.y)
+            },1000) 
+        }
+        
+     
     }
     move_Down(type){  
         if(this.position.y!=0){
@@ -93,7 +110,7 @@ class Player{
         this.attack =true
         setTimeout(()=>{
             this.attack=false
-            console.log('test')
+            // console.log('test')
         },1)
     }
 
