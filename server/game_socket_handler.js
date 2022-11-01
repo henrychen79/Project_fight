@@ -1,7 +1,6 @@
-const game_data_store = require("./models/game_data_store");
 const game_class = require("./game_component/game");
 const player_class = require("./game_component/player");
-let game_data = require("./models/game_data_store");
+const game_data_store = require("./models/game_data_store");
 function conn(socket, io) {
   socket.on("join-room", (player_name, room_id) => {
     let game = game_data_store.check_room_exist(room_id);
@@ -10,13 +9,12 @@ function conn(socket, io) {
       game_data_store.init_game_data(room_id, game);
       var player = new player_class(player_name, room_id);
       game.add_players(player);
-    }
-    if (!game.check_player_exist(player_name)) {
+    } else if (!game.check_player_exist(player_name)) {
       var player = new player_class(
         player_name,
         room_id,
         {
-          x: 9,
+          x: 33,
           y: 5,
           scale: 100,
         },
@@ -34,14 +32,14 @@ function conn(socket, io) {
       .to(socket["room"])
       .emit("room-brocast", `${socket["nick"]} has leave this room`);
   });
-  socket.on("player action keydown", (room_id, player_name, type) => {
-    let game = game_data.get_game(room_id);
+  socket.on("player action keydown", (type, player_name, room_id) => {
+    let game = game_data_store.get_game(room_id);
     let player = game.get_player(player_name);
+    console.log("type:::", type);
     player.move(type);
-    player.attackSpace(type);
-    io.sockets.to(room_id).emit("player action keydown", game.players);
+    io.sockets.to(room_id).emit("player action keydown", type, player);
   });
-  socket.on("player action keyup", (room_id, player_name, type) => {
+  socket.on("player action keyup", (type, player_name, room_id) => {
     let game = game_data.get_game(room_id);
     let player = game.get_player(player_name);
     if (game.players.length >= 2 && type === "Space") {

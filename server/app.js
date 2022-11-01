@@ -11,6 +11,7 @@ const game_data = require("./models/game_data_store");
 const game_route = require("./routes/fight_game_route");
 const game_socket_handler = require("./game_socket_handler");
 app.use("/css", express.static(__dirname + "/css"));
+app.use("/viewControllers", express.static(__dirname + "/viewControllers"));
 server.listen(server_port, () => {
   console.log(`listen on ${server_port}!!!`);
 });

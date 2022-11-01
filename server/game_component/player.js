@@ -18,21 +18,14 @@ class Player {
     this.attackLong = false;
     this.scaleControl = false;
     this.jumpControl = true;
-    this.hp=100;
+    this.hp = 100;
     this.directionX = direction_x || "ArrowRight";
     this.directionY = null;
     this.playerRole = player_role || "player1";
-    this.isWinner=false;
+    this.isWinner = false;
   }
   player_moveUp() {
-    if (this.scaleControl == true) {
-      return;
-    }
-    if (this.jumpControl) {
-      this.location.x = this.location.x;
-      this.location.y = this.location.y - 1;
-      this.jumpControl = false;
-    }
+    this.location.y = this.location.y - 1;
   }
   player_moveDown() {
     if (this.jumpControl != true) {
@@ -45,9 +38,6 @@ class Player {
   }
 
   player_moveLeft() {
-    if (this.jumpControl != true || this.scaleControl == true) {
-      return;
-    }
     if (this.location.x === 0) {
       this.location.x = this.location.x;
       this.location.y = this.location.y;
@@ -58,10 +48,7 @@ class Player {
   }
 
   player_moveRight() {
-    if (this.jumpControl != true || this.scaleControl == true) {
-      return;
-    }
-    if (this.location.x === 9) {
+    if (this.location.x === 33) {
       this.location.x = this.location.x;
       this.location.y = this.location.y;
     } else {
@@ -91,25 +78,14 @@ class Player {
   }
   //整個角色和武器 移動基本設定
   move(type) {
-    if (type === "ArrowLeft" || type === "ArrowRight") {
-      this.player_setDirectionX(type);
-    }
-    if (type === "ArrowUp" || type === "ArrowDown") {
-      this.player_setDirectionY(type);
-    }
-    if (type === "ArrowUp") {
-      this.player_moveUp();
-    }
-    if (type === "ArrowDown") {
-      this.player_moveDown();
-    }
     if (type === "ArrowLeft") {
       this.player_moveLeft();
-      this.wapeMoveLeft();
     }
     if (type === "ArrowRight") {
       this.player_moveRight();
-      this.wapeMoveRight();
+    }
+    if (type === "ArrowRight") {
+      this.player_moveUp();
     }
   }
 

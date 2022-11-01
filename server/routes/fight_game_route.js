@@ -7,7 +7,8 @@ var player_class = require("../game_component/player");
 router.get("/", (req, res) => {
   //res.send("id: " + req.query.id);
   console.log("Player: ", req.query.name, " Join Room:", req.query.id);
-  res.sendFile(htmlPath + "/fight_game.html");
+  //res.sendFile(htmlPath + "/fight_game.html");
+  res.sendFile(htmlPath + "/index.html");
 });
 
 module.exports = router;

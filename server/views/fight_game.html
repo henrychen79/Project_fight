@@ -430,7 +430,6 @@
       let room_id = urlParams.get("id");
       socket.emit("join-room", player_name, room_id);
       socket.on("init player", function (player_list) {
-        // console.log('測試',player_list);
         for (let index = 0; index < player_list.length; index++) {
           let player = player_list[index];
           initialize(index, player);
@@ -469,7 +468,7 @@
         }
       });
       document.addEventListener("keyup", function (e) {
-        console.log(room_id, player_name, e.code);
+        pconsole.log(room_id, player_name, e.code);
         socket.emit("player action keyup", room_id, player_name, e.code);
       });
     </script>
